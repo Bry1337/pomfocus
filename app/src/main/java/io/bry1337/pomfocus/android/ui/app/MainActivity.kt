@@ -1,4 +1,9 @@
-package io.bry1337.pomfocus.android
+package io.bry1337.pomfocus.android.ui.app
+
+/**
+ * Created by Bryan on 2/25/23.
+ * Copyright (c) 2023 bry1337.github.io. All rights reserved.
+ */
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
