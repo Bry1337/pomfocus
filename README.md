@@ -9,4 +9,4 @@ A [Kotlin Multiplatform Mobile](https://kotlinlang.org/docs/kmm-getting-started.
 ## Doc Links
 
 - Coming soon
-- [Getting Started](https://github.com/Bry1337/solid-octo-eureka)
+- [Getting Started](https://github.com/Bry1337/pomfocus)

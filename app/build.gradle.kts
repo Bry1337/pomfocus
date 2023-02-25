@@ -1,6 +1,15 @@
+// Suppress DSL_SCOPE_VIOLATION is needed to avoid a known false positive
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.kotlinter)
+    alias(libs.plugins.android.application)
     kotlin("android")
+}
+
+kotlin.sourceSets.all {
+    // Suppress compile warning: This annotation should be used with the compiler argument '-opt-in=kotlin.RequiresOptIn'
+    // https://discuss.kotlinlang.org/t/how-to-supress-optin-warnings-in-gradle-and-during-git-commit-code-analysis/17981/6
+    languageSettings.optIn("kotlin.RequiresOptIn")
 }
 
 android {
