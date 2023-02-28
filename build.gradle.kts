@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.gradle.versions) apply true
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.dagger.hilt) apply false
     kotlin(findProperty("kotlin.android") as String)
         .version(findProperty("kotlin.multiplatform.version") as String)
         .apply(false)
