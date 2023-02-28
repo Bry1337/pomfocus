@@ -5,6 +5,8 @@ package io.bry1337.pomfocus.theme
  * Copyright (c) 2023 bry1337.github.io. All rights reserved.
  */
 
+// Reference
+// https://m3.material.io/styles/color/the-color-system/color-roles#d6beb54f-54d8-4866-ad80-6f335c891f1b
 internal data class ColorTableImpl(
     override val primary: Long,
     override val primaryContainer: Long,

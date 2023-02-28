@@ -11,7 +11,7 @@ https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/
 https://material.io/components/snackbars#specs
 */
 
-object Dimension {
+object DimensionConstants {
     // Buttons
     const val buttonSizeXs = 32.0f
     const val buttonSizeSm = 36.0f
@@ -74,23 +74,6 @@ object Dimension {
     const val iconSizeXl = 40
     const val iconSizeXxl = 48
 
-    // Flip Timer
-    const val flipTimerSizeXs = 48
-    const val flipTimerSizeSm = 56
-    const val flipTimerSizeMd = 64
-    const val flipTimerSizeLg = 72
-    const val flipTimerSizeXl = 80
-    const val flipTimerSizeXxl = 88
-
-    // Corner radius relative size as designed
-    const val flipTimerCornerRadiusRatio = 8.0 / 64.0
-
-    // Countdown Widgets
-    const val countdownWidgetFlipTimerAspectRatio = 0.6f
-    const val countdownWidgetFlipTimerEditingAspectRatio = 0.95f
-    const val countdownWidgetFullAspectRatio = 0.6f
-    const val countdownWidgetFullEditingAspectRatio = 0.8f
-
     fun avatarStrokeSizeForImageSize(size: Int): Int {
         if (size <= avatarImageSizeSm) {
             return 2
@@ -110,31 +93,6 @@ object Dimension {
 
     // Button Stroke
     const val buttonStroke = 1
-
-    // Cards
-    const val maxCardWidth = 400
-
-    // Events
-    const val eventItemViewHeight = 120
-
-    // Event displays
-    const val minEventGridItemWidth = 160.0f
-    const val maxEventGridItemWidth = 260.0f
-    const val eventGridPreferredMinColumns = 2
-    const val eventGridItemImageAspectRatio = 4.0 / 3.0
-    const val eventListItemImageAspectRatio = 0.9
-    const val eventListItemContentHeight = 110.0f
-
-    fun columnCountForEventGrid(gridWidth: Float, itemSpacing: Float): Int {
-        val minCols = ((gridWidth - itemSpacing) / (maxEventGridItemWidth + itemSpacing)).toInt()
-        val maxCols = ((gridWidth - itemSpacing) / (minEventGridItemWidth + itemSpacing)).toInt()
-
-        if (minCols < eventGridPreferredMinColumns) {
-            return maxCols
-        }
-
-        return minCols
-    }
 
     // Bottom Bar Padding
     val bottomContentPadding = bottomBarSize + vSpacing.lg

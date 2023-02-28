@@ -5,7 +5,7 @@ package io.bry1337.pomfocus.theme
  * Copyright (c) 2023 bry1337.github.io. All rights reserved.
  */
 
-object Timing {
+object DurationConstants {
     const val splashDurationSeconds = 3
 
     const val animationTimeLongMs = 400

@@ -8,14 +8,14 @@ import io.bry1337.pomfocus.theme.tokens.ThemeTokens
  */
 
 /**
- * Theme interface representing
+ * Theme interface representing application theme
  */
 data class Theme(
     val colors: ColorTable,
     val themePreset: ThemePreset,
     val typography: Typography = Typography,
-    val dimen: Dimension = Dimension,
-    val timing: Timing = Timing
+    val dimen: DimensionConstants = DimensionConstants,
+    val timing: DurationConstants = DurationConstants
 ) {
     val gradientBackground: Long
         get() = themePreset.gradientBackgroundColor(colors.isDarkScheme)
