@@ -8,8 +8,6 @@ package io.bry1337.pomfocus.theme.tokens
 object ThemeTokens {
     // Interaction States
     // https://m3.material.io/foundations/interaction-states
-    //
-    // Scaled up the values to work with our app colors
     const val DisabledContainerOpacity = 0.12 * 2.0
     const val DisabledContentOpacity = 0.38 * 1.5
     const val MutedContentOpacity = 0.40

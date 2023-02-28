@@ -16,16 +16,16 @@ internal object DefaultColorPalette : TonalColorPalette {
     override val swatches = mapOf(
         ColorSwatch(
             SWATCH_NAME_DEFAULT,
-            50 to 0xfffdf3e3,
-            100 to 0xfffae0ba,
-            200 to 0xfff8cc8e,
-            300 to 0xfff6b863,
-            400 to 0xfff4a948,
-            500 to AppColors.DefaultPrimary,
-            600 to 0xffec9136,
-            700 to 0xffe58232,
-            800 to 0xffde752f,
-            900 to 0xffd1602b
+            50 to 0xffe6f6ea,
+            100 to 0xffc3e9cb,
+            200 to 0xff9cdba9,
+            300 to 0xff72ce86,
+            400 to 0xff4ec36c,
+            500 to 0xff22b851,
+            600 to 0xff16a848,
+            700 to 0xff00963c,
+            800 to 0xff008531,
+            900 to 0xff00661c
         ).asNamedPair()
     )
 

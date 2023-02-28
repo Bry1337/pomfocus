@@ -18,7 +18,7 @@ object ThemeManager {
         get() = _themeFlow.value
     val themePresetNames = ThemePreset.NAMES
 
-    suspend fun onIsDarkSchemeChanged(isDarkScheme: Boolean) {
+    suspend fun onDarkSchemeChanged(isDarkScheme: Boolean) {
         _themeFlow.emit(ThemeProvider.get(preset = theme.themePreset, isDarkScheme = isDarkScheme))
     }
 
