@@ -1,9 +1,12 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 // Suppress DSL_SCOPE_VIOLATION is needed to avoid a known false positive
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.android.application)
     kotlin("android")
+    kotlin("kapt")
 }
 
 kotlin.sourceSets.all {
@@ -44,5 +47,16 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    // Compose
     implementation(libs.bundles.compose)
+    // Accompanist
+    implementation(libs.bundles.accompanist)
+    // Hilt
+    implementation(libs.android.hilt)
+    kapt(libs.android.hilt.compiler)
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }

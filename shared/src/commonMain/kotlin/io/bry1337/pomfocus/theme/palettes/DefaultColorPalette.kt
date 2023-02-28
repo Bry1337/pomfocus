@@ -1,7 +1,5 @@
 package io.bry1337.pomfocus.theme.palettes
 
-import io.bry1337.pomfocus.theme.tokens.AppColors
-
 /**
  * Created by Bryan on 2/25/23.
  * Copyright (c) 2023 bry1337.github.io. All rights reserved.

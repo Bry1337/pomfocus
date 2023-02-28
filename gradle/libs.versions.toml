@@ -113,10 +113,12 @@ compose = ["androidx-compose-ui", "androidx-compose-ui-tooling", "androidx-compo
     "androidx-compose-material-icons-core", "androidx-compose-material-icons-extended", "androidx-compose-activity",
     "androidx-compose-navigation", "androidx-compose-hilt-navigation", "androidx-compose-runtime-livedata",
     "androidx-compose-material3", "androidx-compose-material3-windowsizeclass"]
+accompanist = ["google-accompanist-systemuicontroller", "google-accompanist-placeholder", "google-accompanist-permissions"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradle" }
 android-library = { id = "com.android.library", version.ref = "gradle" }
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 kotlin-multiplatform =  { id = "multiplatform", version.ref = "kotlin" }
 gradle-versions = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions" }
