@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import io.bry1337.pomfocus.android.ui.home.HomeScreen
 import io.bry1337.pomfocus.android.ui.splash.SplashScreen
 
 /**
@@ -25,6 +26,13 @@ fun AppGraph(appState: AppState, modifier: Modifier = Modifier, finishActivity: 
                 finishActivity()
             }
             SplashScreen(modifier)
+        }
+
+        composable(AppScene.MAIN.route) {
+            BackHandler {
+                finishActivity()
+            }
+            HomeScreen(modifier)
         }
     }
 }

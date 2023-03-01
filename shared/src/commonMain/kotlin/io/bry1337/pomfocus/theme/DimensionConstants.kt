@@ -18,6 +18,7 @@ object DimensionConstants {
     const val buttonSizeMd = 40.0f
     const val buttonSizeLg = 44.0f
     const val buttonSizeXl = 48.0f
+    const val buttonSizeXxl = 52.0f
 
     // Switch
     const val switchSizeMd = 32.0f
@@ -41,11 +42,23 @@ object DimensionConstants {
     const val roundedCornersXl = 28
     const val roundedCornersFull = -1
 
+    // Shadows based on elevation tokens
+    // https://m3.material.io/styles/elevation/tokens
+    const val shadowNone = 0
+    const val shadowXs = 1
+    const val shadowSm = 3
+    const val shadowMd = 6
+    const val shadowLg = 8
+    const val shadowXl = 12
+
     // Spacing
     val vSpacing = Spacing.vSpacingScaled()
     val hSpacing = Spacing.hSpacingScaled()
     const val spacingNone = 0
     const val spacingMin = 2
+
+    // Sizing
+    val buttonSizing = Sizing.buttonSizingScaled()
 
     // List Items
     const val listItemMinHeight = 40
