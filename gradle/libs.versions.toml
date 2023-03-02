@@ -47,9 +47,9 @@ android-desugaring = { module = "com.android.tools:desugar_jdk_libs", version.re
 # Optionals because of compose
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-constraint-layout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraint-layout" }
+android-material = { module = "com.google.android.material:material", version.ref = "android-material" }
 
 # Dependency Injection
-android-material = { module = "com.google.android.material:material", version.ref = "android-material" }
 android-hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 android-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 
@@ -91,7 +91,7 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
-#  Ktor http client for Multiplatform
+# Ktor http client for Multiplatform
 # https://ktor.io/docs/getting-started-ktor-client-multiplatform-mobile.html
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
