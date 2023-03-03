@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.android.application)
     kotlin("android")
     kotlin("kapt")
+    alias(libs.plugins.dagger.hilt)
+
 }
 
 kotlin.sourceSets.all {

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,7 +80,7 @@ fun AppNavBarItem(
 @Preview("default", showBackground = true)
 @Preview("dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun AppNavBarPreview() {
+private fun AppNavBarPreview() {
     AppTheme {
         AppNavBar(
             leadingItem = {

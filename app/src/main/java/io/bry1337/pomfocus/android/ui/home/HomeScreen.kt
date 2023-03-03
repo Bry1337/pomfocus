@@ -1,6 +1,7 @@
 package io.bry1337.pomfocus.android.ui.home
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -78,7 +79,8 @@ private fun TopAppbar(onSettingsPressed: () -> Unit) {
     )
 }
 
-@Preview(showBackground = true)
+@Preview("default", showBackground = true)
+@Preview("dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun HomeScreenPreview() {
     AppTheme {
