@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.bry1337.pomfocus.android.R
 import io.bry1337.pomfocus.android.extensions.RoundedModalShape
+import io.bry1337.pomfocus.android.ui.app.AppState
+import io.bry1337.pomfocus.android.ui.app.rememberAppState
 import io.bry1337.pomfocus.android.ui.components.AppNavBar
 import io.bry1337.pomfocus.android.ui.components.AppNavBarItem
 import io.bry1337.pomfocus.android.ui.theme.AppTheme
@@ -39,7 +41,7 @@ private enum class HomeScreenBottomSheet : BottomSheetDescriptor {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(appState: AppState, modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
     val bottomSheetOperation = rememberBottomSheetOperation(
         scope = scope,
@@ -52,7 +54,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         sheetState = bottomSheetOperation.sheetState,
         sheetContent = {
             when (bottomSheetOperation.sheetDescriptor) {
-                HomeScreenBottomSheet.Settings -> SettingsModal()
+                HomeScreenBottomSheet.Settings -> SettingsModal(appState = appState)
             }
         },
         sheetShape = RoundedModalShape
@@ -84,6 +86,6 @@ private fun TopAppbar(onSettingsPressed: () -> Unit) {
 @Composable
 fun HomeScreenPreview() {
     AppTheme {
-        HomeScreen()
+        HomeScreen(rememberAppState())
     }
 }

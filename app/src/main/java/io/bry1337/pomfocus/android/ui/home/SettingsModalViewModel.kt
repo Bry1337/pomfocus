@@ -1,13 +1,9 @@
 package io.bry1337.pomfocus.android.ui.home
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.bry1337.pomfocus.android.ui.theme.ThemeManager
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -16,26 +12,4 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class SettingsModalViewModel @Inject constructor()  : ViewModel() {
-    val themePresetNameList = ThemeManager.themePresetNames
-    val themePresetName
-        get() = theme.themePreset.name
-    val isDarkScheme
-        get() = theme.isDarkScheme
-    var theme by mutableStateOf(ThemeManager.theme)
-        private set
-
-    init {
-        viewModelScope.launch {
-            ThemeManager.themeFlow.collect {
-                theme = it
-            }
-        }
-    }
-
-    fun onThemeSchemeChanged() {
-        viewModelScope.launch {
-            ThemeManager.onDarkSchemeChanged(!isDarkScheme)
-        }
-    }
-}
+class SettingsModalViewModel @Inject constructor() : ViewModel()

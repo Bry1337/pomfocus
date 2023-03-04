@@ -22,6 +22,7 @@ fun ActionOutlinedButton(
     buttonContainerColor: Color = MaterialTheme.colorScheme.primary,
     buttonContentColor: Color = MaterialTheme.colorScheme.onPrimary,
     @DrawableRes icon: Int? = null,
+    enabled: Boolean = true,
     action: () -> Unit = {}
 ) {
     OutlinedButton(
@@ -30,6 +31,7 @@ fun ActionOutlinedButton(
             containerColor = buttonContainerColor,
             contentColor = buttonContentColor
         ),
+        enabled = enabled,
         onClick = action
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {

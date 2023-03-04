@@ -87,6 +87,9 @@ object DimensionConstants {
     const val iconSizeXl = 40
     const val iconSizeXxl = 48
 
+    // Container Height
+    const val boxHeightXxl = 72
+
     fun avatarStrokeSizeForImageSize(size: Int): Int {
         if (size <= avatarImageSizeSm) {
             return 2

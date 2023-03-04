@@ -9,6 +9,4 @@ import dagger.hilt.android.HiltAndroidApp
  */
 
 @HiltAndroidApp
-class PomfocusApp : Application() {
-
-}
+class PomfocusApp : Application()

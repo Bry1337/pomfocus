@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">PomFocus</string>
+
+
+    <!-- Settings Modal -->
+    <string name="settings_login_button">Log In</string>
+    <string name="settings_sign_up_button">Sign up</string>
+    <string name="settings_developer_button">Developer Settings</string>
+
+</resources>
