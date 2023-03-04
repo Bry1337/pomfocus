@@ -10,7 +10,6 @@ object AppColors {
     const val White = 0xffffffff
     const val LightText = White
     const val DarkText = 0xff242424
-    const val DefaultPrimary = 0xfff19C3A
     const val LightSurface = 0xfff9f9f9
     const val DarkSurface = 0xff333333
     const val LightSurfaceVariant = 0xffc4c4c4

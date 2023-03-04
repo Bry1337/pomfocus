@@ -69,7 +69,7 @@ fun AppIconButton(
 @Preview("default", showBackground = true)
 @Preview("dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun AppIconButtonPreview() {
+private fun AppIconButtonPreview() {
     AppTheme {
         Column(
             Modifier

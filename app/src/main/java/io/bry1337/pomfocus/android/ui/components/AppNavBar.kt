@@ -79,7 +79,7 @@ fun AppNavBarItem(
 @Preview("default", showBackground = true)
 @Preview("dark mode", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun AppNavBarPreview() {
+private fun AppNavBarPreview() {
     AppTheme {
         AppNavBar(
             leadingItem = {
