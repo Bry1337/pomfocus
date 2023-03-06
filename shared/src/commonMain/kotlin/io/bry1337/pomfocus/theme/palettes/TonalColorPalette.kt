@@ -16,9 +16,18 @@ internal interface TonalColorPalette {
         get(swatchName, primaryColorTone(isDarkScheme))!!
     fun primaryContentColor(swatchName: String, isDarkScheme: Boolean): Long =
         get(swatchName, primaryContentColorTone(isDarkScheme))!!
+
+    fun primaryContainerColor(swatchName: String, isDarkScheme: Boolean): Long =
+        get(swatchName, primaryContainerColor(isDarkScheme))!!
+    fun surfaceColor(swatchName: String, isDarkScheme: Boolean): Long =
+        get(swatchName, surfaceColorTone(isDarkScheme))!!
     fun gradientBackgroundColor(swatchName: String, isDarkScheme: Boolean): Long =
         setAlphaComponent(get(swatchName, gradientBackgroundColorTone(isDarkScheme))!!, ThemeTokens.gradientBackgroundOpacity)
     fun primaryColorTone(isDarkScheme: Boolean): Int = if (isDarkScheme) 400 else 500
     fun primaryContentColorTone(isDarkScheme: Boolean): Int = if (isDarkScheme) 100 else 900
+
+    fun primaryContainerColor(isDarkScheme: Boolean): Int = if(isDarkScheme) 900 else 100
     fun gradientBackgroundColorTone(isDarkScheme: Boolean): Int = if (isDarkScheme) 50 else 50
+
+    fun surfaceColorTone(isDarkScheme: Boolean): Int = if(isDarkScheme) 700 else 200
 }

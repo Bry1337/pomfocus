@@ -1,17 +1,20 @@
 package io.bry1337.pomfocus.android.ui.developer
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import io.bry1337.pomfocus.android.R
 import io.bry1337.pomfocus.android.extensions.themePaddingAll
 import io.bry1337.pomfocus.android.ui.components.ActionOutlinedButton
 import io.bry1337.pomfocus.android.ui.theme.AppTheme
@@ -29,6 +32,11 @@ fun DeveloperScreen(
     viewModel: DeveloperScreenViewModel = hiltViewModel()
 ) {
     val isDarkMode = viewModel.isDarkMode
+    var dropDownMenuExpanded by remember { mutableStateOf(false) }
+
+    val onDropDownExpand: () -> Unit = {
+        dropDownMenuExpanded = !dropDownMenuExpanded
+    }
     Scaffold {
         LazyVerticalGrid(
             modifier = modifier
@@ -39,7 +47,11 @@ fun DeveloperScreen(
             horizontalArrangement = Arrangement.spacedBy(AppSizing.sm.paddingScalingH)
         ) {
             gridTitleComponent(
+                themeName = viewModel.themePresetNameList,
                 isDarkMode = isDarkMode,
+                dropDownExpanded = dropDownMenuExpanded,
+                onDropDownExpand = onDropDownExpand,
+                onThemeChange = viewModel::onPresetNameChanged,
                 onCheckChanged = viewModel::onDarkModeSwitch
             )
             outlinedButton()
@@ -51,19 +63,50 @@ fun DeveloperScreen(
 }
 
 private fun LazyGridScope.gridTitleComponent(
+    themeName: List<String>,
     isDarkMode: Boolean,
+    dropDownExpanded: Boolean,
+    onDropDownExpand: () -> Unit,
+    onThemeChange: (String) -> Unit,
     onCheckChanged: (Boolean) -> Unit
 ) {
     item {
-        Row(
-            modifier = Modifier.themePaddingAll(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Text(
-                text = "Buttons",
-                style = MaterialTheme.typography.titleMedium
-            )
+        Box(modifier = Modifier.themePaddingAll()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(
+                    modifier = Modifier
+                        .clickable {
+                            onDropDownExpand()
+                        },
+                    text = "Theme",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Icon(
+                    modifier = Modifier
+                        .clickable {
+                            onDropDownExpand()
+                        },
+                    painter = painterResource(id = R.drawable.ic_dropdown),
+                    contentDescription = null
+                )
+                DropdownMenu(
+                    expanded = dropDownExpanded,
+                    onDismissRequest = onDropDownExpand
+                ) {
+                    themeName.forEach {
+                        DropdownMenuItem(text = {
+                            Text(it)
+                        }, onClick = {
+                                onDropDownExpand()
+                                onThemeChange(it)
+                            })
+                    }
+                }
+            }
         }
     }
     item {

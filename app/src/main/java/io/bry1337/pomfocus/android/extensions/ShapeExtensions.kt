@@ -12,3 +12,5 @@ val RoundedModalShape = RoundedCornerShape(
     topStart = AppSizing.md.roundedCornersScaling,
     topEnd = AppSizing.md.roundedCornersScaling
 )
+
+val RoundedSurfaceShape = RoundedCornerShape(AppSizing.md.roundedCornersScaling)

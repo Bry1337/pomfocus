@@ -9,4 +9,8 @@
     <string name="settings_sign_up_button">Sign up</string>
     <string name="settings_developer_button">Developer Settings</string>
 
+    <!-- Home Scren -->
+    <string name="home_screen_start_button">START</string>
+    <string name="home_screen_pause_button">PAUSE</string>
+
 </resources>
