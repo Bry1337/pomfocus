@@ -12,5 +12,10 @@
     <!-- Home Scren -->
     <string name="home_screen_start_button">START</string>
     <string name="home_screen_pause_button">PAUSE</string>
-
+    <string name="home_screen_focus_title_1">POMODORO TIME</string>
+    <string name="home_screen_focus_title_2">BREAK</string>
+    <string name="home_screen_focus_label_1">It\'s time to focus!</string>
+    <string name="home_screen_focus_label_2">Keep going, just a little more!</string>
+    <string name="home_screen_focus_label_3">Get some fresh air break</string>
+    <string name="home_screen_focus_label_4">Rehydrate and breathe</string>
 </resources>

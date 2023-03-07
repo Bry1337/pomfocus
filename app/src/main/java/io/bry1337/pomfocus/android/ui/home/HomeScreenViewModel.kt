@@ -6,7 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.bry1337.pomfocus.android.R
+import io.bry1337.pomfocus.android.model.Pomodoro
+import io.bry1337.pomfocus.android.model.PomodoroState
 import io.bry1337.pomfocus.android.utils.TimerConstants
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -22,13 +23,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor() : ViewModel() {
-
+    val pomodoroModels = Pomodoro.pomodoroList
+    var pomodoroCurrentIndex by mutableStateOf(0)
     private var timerScope: Job? = null
-    private var isTimeRunning by mutableStateOf(false)
-    private var pomodoroTotalTime: Int by mutableStateOf(TimerConstants.DEFAULT_TOTAL_SECONDS) // 1500 for 25 minutes
-    private var runningMinutes by mutableStateOf(TimerConstants.DEFAULT_MINUTES) // 25 minutes default value
+    private var pomodoroTotalTime: Int by mutableStateOf(pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds) // 1500 for 25 minutes
+    private var runningMinutes by mutableStateOf(pomodoroModels[pomodoroCurrentIndex].pomodoroTotalMinutes) // 25 minutes default value
     private var runningSeconds by mutableStateOf(TimerConstants.DEFAULT_SECONDS)
-    private val pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
+    private var isTimeRunning by mutableStateOf(false)
+    private var pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
     var formattedRunningTime by mutableStateOf(
         String.format(
             "%02d:%02d",
@@ -37,16 +39,39 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
         )
     )
         private set
-    var timeFunctionLabel by mutableStateOf(R.string.home_screen_start_button)
-        private set
 
-    fun startRunningTime() {
-        setTimeAndLabel()
+
+    /**
+     * Forward function
+     */
+    fun forwardPomodoroState() {
+        // TO FORWARD POMODORO PHASE
+        updateValues()
+    }
+
+    /**
+     * Index should be decremented when placed on PAUSE state and
+     * incremented when placed on RUNNING state
+     */
+    private fun toggleTimerState() {
+        if (pomodoroCurrentIndex % 2 != 0 && isTimeRunning) {
+            pomodoroCurrentIndex -= 1 // TO PAUSE STATE
+        } else {
+            pomodoroCurrentIndex += 1 // TO RUN TIMER
+        }
+    }
+
+    /**
+     * Run the flow asynchronously and pause it depending if the time is running
+     */
+    fun togglePomodoroMainAction() {
+        toggleTimerState()
+        isTimeRunning = !isTimeRunning
         if (isTimeRunning) {
             timerScope = viewModelScope.launch {
                 pomodoroTimeFlow.cancellable().collect {
                     delay(1000L)
-                    setRunningTime()
+                    updateRunningTime()
                 }
             }
         } else {
@@ -54,40 +79,64 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun setRunningTime() {
+    /**
+     * Updates the values that is displayed in the view
+     */
+    private fun updateRunningTime() {
         if (runningMinutes == 0 && runningSeconds == 0) {
-            resetValues()
+            updateValues()
             return
         } else if (runningSeconds == 0) {
             runningMinutes -= 1
-            runningSeconds = 60
+            runningSeconds = TimerConstants.DEFAULT_FULL_SECONDS
         }
         runningSeconds -= 1
-        setFormattedRunningTime()
+        formatRunningTime()
     }
 
-    private fun resetValues() {
+    /**
+     * Updates the rest of the states depending if the state is forwarded or
+     * the time has run out
+     */
+    private fun updateValues() {
         timerScope?.cancel()
-        setTimeAndLabel()
-        runningMinutes = TimerConstants.DEFAULT_MINUTES
-        pomodoroTotalTime = TimerConstants.DEFAULT_TOTAL_SECONDS
-        setFormattedRunningTime()
+        stateProcessor()
+        formatRunningTime()
     }
 
-    private fun setTimeAndLabel() {
-        timeFunctionLabel = if (isTimeRunning) {
-            R.string.home_screen_start_button
-        } else {
-            R.string.home_screen_pause_button
-        }
-        isTimeRunning = !isTimeRunning
-    }
-
-    private fun setFormattedRunningTime() {
+    /**
+     * Format the time to be sent back to view
+     */
+    private fun formatRunningTime() {
         formattedRunningTime = String.format(
             "%02d:%02d",
             runningMinutes,
             runningSeconds
         )
+    }
+
+    /**
+     * Checks the state and updates the values depending on the state.
+     * This also assign new values to flow to update the time constraint.
+     */
+    private fun stateProcessor() {
+        when (pomodoroModels[pomodoroCurrentIndex].state) {
+            PomodoroState.POMODORO_START, PomodoroState.POMODORO_RUNNING -> {
+                pomodoroCurrentIndex = PomodoroState.BREAK_START.index
+                runningSeconds = TimerConstants.DEFAULT_SECONDS
+                runningMinutes = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalMinutes
+                pomodoroTotalTime = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds
+                pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
+            }
+
+            PomodoroState.BREAK_START, PomodoroState.BREAK_RUNNING -> {
+                pomodoroCurrentIndex = PomodoroState.POMODORO_START.index
+                runningSeconds = TimerConstants.DEFAULT_SECONDS
+                runningMinutes = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalMinutes
+                pomodoroTotalTime = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds
+                pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
+            }
+        }
+        isTimeRunning = !isTimeRunning
     }
 }

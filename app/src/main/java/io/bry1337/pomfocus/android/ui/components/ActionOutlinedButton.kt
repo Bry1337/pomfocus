@@ -18,6 +18,7 @@ import io.bry1337.pomfocus.android.ui.theme.AppTheme
 @Composable
 fun ActionOutlinedButton(
     text: String,
+    textModifier: Modifier = Modifier,
     modifier: Modifier = Modifier,
     buttonContainerColor: Color = MaterialTheme.colorScheme.primary,
     buttonContentColor: Color = MaterialTheme.colorScheme.onPrimary,
@@ -38,7 +39,7 @@ fun ActionOutlinedButton(
             if (icon != null) {
                 AppIconButton(icon = icon)
             }
-            Text(text)
+            Text(text = text, modifier = textModifier)
         }
     }
 }

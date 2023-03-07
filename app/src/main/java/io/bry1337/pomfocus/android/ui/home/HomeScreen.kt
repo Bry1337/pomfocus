@@ -56,6 +56,7 @@ fun HomeScreen(
     val onSettingsPressed = {
         bottomSheetOperation.presentSheet(HomeScreenBottomSheet.Settings)
     }
+    val currentPhase = viewModel.pomodoroCurrentIndex
     ModalBottomSheetLayout(
         sheetState = bottomSheetOperation.sheetState,
         sheetContent = {
@@ -75,9 +76,13 @@ fun HomeScreen(
                 item {
                     HomeScreenDetail(
                         timerValue = viewModel.formattedRunningTime,
+                        pomodoroTitle = viewModel.pomodoroModels[currentPhase].pomodoroTitle,
+                        pomodoroQuote = viewModel.pomodoroModels[currentPhase].pomodoroQuote,
                         modifier = Modifier.padding(it),
-                        actionButtonLabel = viewModel.timeFunctionLabel,
-                        onStartTimer = viewModel::startRunningTime
+                        actionButtonLabel = viewModel.pomodoroModels[currentPhase].mainActionButtonLabel,
+                        isForwardable = viewModel.pomodoroModels[currentPhase].isForwardable,
+                        onStartTimer = viewModel::togglePomodoroMainAction,
+                        onForward = viewModel::forwardPomodoroState
                     )
                 }
             }

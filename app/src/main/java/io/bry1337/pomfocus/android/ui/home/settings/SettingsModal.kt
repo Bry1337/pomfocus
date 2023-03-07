@@ -20,6 +20,7 @@ import io.bry1337.pomfocus.android.extensions.themeShadow
 import io.bry1337.pomfocus.android.ui.app.AppState
 import io.bry1337.pomfocus.android.ui.app.rememberAppState
 import io.bry1337.pomfocus.android.ui.components.ActionOutlinedButton
+import io.bry1337.pomfocus.android.ui.home.settings.SettingsModalViewModel
 import io.bry1337.pomfocus.android.ui.main.MainScene
 import io.bry1337.pomfocus.android.ui.theme.AppTheme
 import io.bry1337.pomfocus.android.utils.AppSizing
