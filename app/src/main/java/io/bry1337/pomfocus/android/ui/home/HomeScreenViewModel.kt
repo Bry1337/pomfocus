@@ -1,14 +1,19 @@
 package io.bry1337.pomfocus.android.ui.home
 
+import android.content.Context
+import android.media.MediaPlayer
+import android.media.RingtoneManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.bry1337.pomfocus.android.model.Pomodoro
 import io.bry1337.pomfocus.android.model.PomodoroState
 import io.bry1337.pomfocus.android.utils.TimerConstants
+import io.bry1337.pomfocus.theme.AppContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
@@ -23,6 +28,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor() : ViewModel() {
+    private val selectedRingtoneUri =
+        RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+    private val notificationPlayer =
+        MediaPlayer.create(AppContext.getContext() as Context, selectedRingtoneUri)
     val pomodoroModels = Pomodoro.pomodoroList
     var pomodoroCurrentIndex by mutableStateOf(0)
     private var timerScope: Job? = null
@@ -31,6 +40,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     private var runningSeconds by mutableStateOf(TimerConstants.DEFAULT_SECONDS)
     private var isTimeRunning by mutableStateOf(false)
     private var pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
+    var playSound: Boolean by mutableStateOf(false)
     var formattedRunningTime by mutableStateOf(
         String.format(
             "%02d:%02d",
@@ -39,7 +49,6 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
         )
     )
         private set
-
 
     /**
      * Forward function
@@ -127,6 +136,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                 runningMinutes = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalMinutes
                 pomodoroTotalTime = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds
                 pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
+                playNotificationSound()
             }
 
             PomodoroState.BREAK_START, PomodoroState.BREAK_RUNNING -> {
@@ -135,8 +145,19 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                 runningMinutes = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalMinutes
                 pomodoroTotalTime = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds
                 pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
+                playNotificationSound()
             }
         }
         isTimeRunning = !isTimeRunning
+    }
+
+    private fun playNotificationSound() {
+        viewModelScope.launch {
+            snapshotFlow {
+                notificationPlayer
+            }.collect { player ->
+                player.start()
+            }
+        }
     }
 }

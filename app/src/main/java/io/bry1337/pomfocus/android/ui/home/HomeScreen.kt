@@ -10,8 +10,10 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.bry1337.pomfocus.android.R
@@ -20,6 +22,7 @@ import io.bry1337.pomfocus.android.ui.app.AppState
 import io.bry1337.pomfocus.android.ui.app.rememberAppState
 import io.bry1337.pomfocus.android.ui.components.AppNavBar
 import io.bry1337.pomfocus.android.ui.components.AppNavBarItem
+import io.bry1337.pomfocus.android.ui.home.settings.SettingsModal
 import io.bry1337.pomfocus.android.ui.theme.AppTheme
 import io.bry1337.pomfocus.android.utils.BottomSheetDescriptor
 import io.bry1337.pomfocus.android.utils.rememberBottomSheetOperation
@@ -48,6 +51,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val bottomSheetOperation = rememberBottomSheetOperation(
         scope = scope,

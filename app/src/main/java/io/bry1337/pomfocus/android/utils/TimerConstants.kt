@@ -8,10 +8,12 @@ package io.bry1337.pomfocus.android.utils
 object TimerConstants {
 
     const val DEFAULT_POMODORO_TOTAL_SECONDS = 60 // Temporary value
+
     //    const val DEFAULT_POMODORO_TOTAL_SECONDS = 60 * 25 // 60 = 1 minute * 25 minutes
     const val DEFAULT_BREAK_TOTAL_SECONDS = 60 * 5
 
     const val DEFAULT_POMODORO_MINUTES = 1 // Temporary value
+
     //    const val DEFAULT_POMODORO_MINUTES = 25 // Default minutes per Pomodoro technique
     const val DEFAULT_BREAK_MINUTES = 5
 
