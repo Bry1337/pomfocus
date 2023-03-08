@@ -3,15 +3,17 @@ package io.bry1337.pomfocus.android.ui.home
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import io.bry1337.pomfocus.android.R
 import io.bry1337.pomfocus.android.extensions.RoundedModalShape
 import io.bry1337.pomfocus.android.ui.app.AppState
@@ -41,7 +43,11 @@ private enum class HomeScreenBottomSheet : BottomSheetDescriptor {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(appState: AppState, modifier: Modifier = Modifier) {
+fun HomeScreen(
+    appState: AppState,
+    modifier: Modifier = Modifier,
+    viewModel: HomeScreenViewModel = hiltViewModel()
+) {
     val scope = rememberCoroutineScope()
     val bottomSheetOperation = rememberBottomSheetOperation(
         scope = scope,
@@ -50,6 +56,7 @@ fun HomeScreen(appState: AppState, modifier: Modifier = Modifier) {
     val onSettingsPressed = {
         bottomSheetOperation.presentSheet(HomeScreenBottomSheet.Settings)
     }
+    val currentPhase = viewModel.pomodoroCurrentIndex
     ModalBottomSheetLayout(
         sheetState = bottomSheetOperation.sheetState,
         sheetContent = {
@@ -65,6 +72,20 @@ fun HomeScreen(appState: AppState, modifier: Modifier = Modifier) {
                 TopAppbar(onSettingsPressed)
             }
         ) {
+            LazyColumn {
+                item {
+                    HomeScreenDetail(
+                        timerValue = viewModel.formattedRunningTime,
+                        pomodoroTitle = viewModel.pomodoroModels[currentPhase].pomodoroTitle,
+                        pomodoroQuote = viewModel.pomodoroModels[currentPhase].pomodoroQuote,
+                        modifier = Modifier.padding(it),
+                        actionButtonLabel = viewModel.pomodoroModels[currentPhase].mainActionButtonLabel,
+                        isForwardable = viewModel.pomodoroModels[currentPhase].isForwardable,
+                        onStartTimer = viewModel::togglePomodoroMainAction,
+                        onForward = viewModel::forwardPomodoroState
+                    )
+                }
+            }
         }
     }
 }

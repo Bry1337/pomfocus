@@ -18,13 +18,12 @@ import javax.inject.Inject
 @HiltViewModel
 class DeveloperScreenViewModel @Inject constructor() : ViewModel() {
     val themePresetNameList = ThemeManager.themePresetNames
-    val themePresetName
-        get() = theme.themePreset.name
-
     var theme by mutableStateOf(ThemeManager.theme)
         private set
 
-    var isDarkMode by mutableStateOf(false)
+    private val isDarkScheme = theme.isDarkScheme
+
+    var isDarkMode by mutableStateOf(isDarkScheme)
         private set
 
     init {
@@ -32,6 +31,12 @@ class DeveloperScreenViewModel @Inject constructor() : ViewModel() {
             ThemeManager.themeFlow.collect {
                 theme = it
             }
+        }
+    }
+
+    fun onPresetNameChanged(presetName: String) {
+        viewModelScope.launch {
+            ThemeManager.onThemePresetNameChanged(presetName)
         }
     }
 

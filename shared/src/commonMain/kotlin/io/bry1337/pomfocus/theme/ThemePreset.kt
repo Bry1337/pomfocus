@@ -39,6 +39,10 @@ enum class ThemePreset(private val palette: TonalColorPalette, private val swatc
     fun gradientBackgroundColor(isDarkScheme: Boolean): Long =
         palette.gradientBackgroundColor(swatchName, isDarkScheme)
 
+    fun primaryContainerColor(isDarkScheme: Boolean): Long = palette.primaryContainerColor(swatchName, isDarkScheme)
+
+    fun surfaceColor(isDarkScheme: Boolean): Long = palette.surfaceColor(swatchName, isDarkScheme)
+
     companion object {
         val NAMES = values().map { it.name }
     }

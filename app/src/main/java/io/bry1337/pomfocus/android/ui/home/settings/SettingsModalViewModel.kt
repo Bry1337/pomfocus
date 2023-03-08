@@ -1,4 +1,4 @@
-package io.bry1337.pomfocus.android.ui.home
+package io.bry1337.pomfocus.android.ui.home.settings
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
