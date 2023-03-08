@@ -10,7 +10,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.bry1337.pomfocus.android.ui.theme.ThemeManager
 import io.bry1337.pomfocus.theme.DurationConstants
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

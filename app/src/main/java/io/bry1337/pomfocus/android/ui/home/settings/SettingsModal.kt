@@ -1,6 +1,12 @@
-package io.bry1337.pomfocus.android.ui.home
+package io.bry1337.pomfocus.android.ui.home.settings
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -20,7 +26,6 @@ import io.bry1337.pomfocus.android.extensions.themeShadow
 import io.bry1337.pomfocus.android.ui.app.AppState
 import io.bry1337.pomfocus.android.ui.app.rememberAppState
 import io.bry1337.pomfocus.android.ui.components.ActionOutlinedButton
-import io.bry1337.pomfocus.android.ui.home.settings.SettingsModalViewModel
 import io.bry1337.pomfocus.android.ui.main.MainScene
 import io.bry1337.pomfocus.android.ui.theme.AppTheme
 import io.bry1337.pomfocus.android.utils.AppSizing

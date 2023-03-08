@@ -2,6 +2,7 @@ package io.bry1337.pomfocus.android.ui.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
+import io.bry1337.pomfocus.theme.AppContext
 
 /**
  * Created by Bryan on 3/3/23.
@@ -9,4 +10,10 @@ import dagger.hilt.android.HiltAndroidApp
  */
 
 @HiltAndroidApp
-class PomfocusApp : Application()
+class PomfocusApp : Application() {
+    init {
+        AppContext.registerContextProvider {
+            this
+        }
+    }
+}
