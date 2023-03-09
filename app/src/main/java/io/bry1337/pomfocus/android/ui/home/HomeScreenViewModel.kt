@@ -10,8 +10,10 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.bry1337.pomfocus.android.R
 import io.bry1337.pomfocus.android.model.Pomodoro
 import io.bry1337.pomfocus.android.model.PomodoroState
+import io.bry1337.pomfocus.android.ui.notification.NotificationProvider
 import io.bry1337.pomfocus.android.utils.TimerConstants
 import io.bry1337.pomfocus.theme.AppContext
 import kotlinx.coroutines.Job
@@ -137,6 +139,10 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                 pomodoroTotalTime = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds
                 pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
                 playNotificationSound()
+                NotificationProvider.showNotification(
+                    R.string.notification_pomodoro_finished_title,
+                    R.string.notification_pomodoro_finished
+                )
             }
 
             PomodoroState.BREAK_START, PomodoroState.BREAK_RUNNING -> {
@@ -146,6 +152,10 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                 pomodoroTotalTime = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds
                 pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
                 playNotificationSound()
+                NotificationProvider.showNotification(
+                    R.string.notification_break_finished_title,
+                    R.string.notification_break_finished
+                )
             }
         }
         isTimeRunning = !isTimeRunning

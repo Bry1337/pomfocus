@@ -18,4 +18,10 @@
     <string name="home_screen_focus_label_2">Keep going, just a little more!</string>
     <string name="home_screen_focus_label_3">Get some fresh air break</string>
     <string name="home_screen_focus_label_4">Rehydrate and breathe</string>
+
+    <!-- Notification -->
+    <string name="notification_pomodoro_finished_title">Break time!</string>
+    <string name="notification_pomodoro_finished">Wow you did great! you\'ve earned a 5 minute break.</string>
+    <string name="notification_break_finished_title">Back to focus</string>
+    <string name="notification_break_finished">Break is finished, let\'s go finish some tasks</string>
 </resources>
