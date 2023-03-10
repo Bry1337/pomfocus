@@ -3,6 +3,7 @@ package io.bry1337.pomfocus.android.ui.home
 import android.content.Context
 import android.media.MediaPlayer
 import android.media.RingtoneManager
+import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -42,7 +43,6 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     private var runningSeconds by mutableStateOf(TimerConstants.DEFAULT_SECONDS)
     private var isTimeRunning by mutableStateOf(false)
     private var pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
-    var playSound: Boolean by mutableStateOf(false)
     var formattedRunningTime by mutableStateOf(
         String.format(
             "%02d:%02d",
@@ -138,10 +138,9 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                 runningMinutes = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalMinutes
                 pomodoroTotalTime = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds
                 pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
-                playNotificationSound()
-                NotificationProvider.showNotification(
-                    R.string.notification_pomodoro_finished_title,
-                    R.string.notification_pomodoro_finished
+                playNotificationSound(
+                    notifTitle = R.string.notification_pomodoro_finished_title,
+                    notifContent = R.string.notification_pomodoro_finished
                 )
             }
 
@@ -151,22 +150,26 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                 runningMinutes = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalMinutes
                 pomodoroTotalTime = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds
                 pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
-                playNotificationSound()
-                NotificationProvider.showNotification(
+                playNotificationSound(
+                    notifTitle =
                     R.string.notification_break_finished_title,
-                    R.string.notification_break_finished
+                    notifContent = R.string.notification_break_finished
                 )
             }
         }
         isTimeRunning = !isTimeRunning
     }
 
-    private fun playNotificationSound() {
+    /**
+     * Play notification sound queue in flow
+     */
+    private fun playNotificationSound(@StringRes notifTitle: Int, @StringRes notifContent: Int) {
         viewModelScope.launch {
             snapshotFlow {
                 notificationPlayer
             }.collect { player ->
                 player.start()
+                NotificationProvider.showNotification(notifTitle, notifContent)
             }
         }
     }
