@@ -17,6 +17,7 @@ compose-hilt-navigation = "1.0.0"
 compose-material3 = "1.1.0-alpha07"
 compose-accompanist = "0.28.0"
 constraint-layout = "1.1.0-alpha04"
+core-version = "1.6.0"
 google-maps = "18.1.0"
 google-services = "4.3.14"
 gradle = "7.3.1"
@@ -72,6 +73,9 @@ androidx-compose-material3-windowsizeclass = { module = "androidx.compose.materi
 # Android Datastore
 # https://developer.android.com/topic/libraries/architecture/datastore
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
+
+# Notification Compat
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "core-version"}
 
 # Google accompanist
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "compose-accompanist" }

@@ -54,6 +54,9 @@ dependencies {
     // Hilt
     implementation(libs.android.hilt)
     kapt(libs.android.hilt.compiler)
+
+    // Core / Notification Compat
+    implementation(libs.androidx.core)
 }
 
 // Allow references to generated code

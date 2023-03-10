@@ -1,5 +1,6 @@
 package io.bry1337.pomfocus.android.ui.home
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import io.bry1337.pomfocus.android.R
 import io.bry1337.pomfocus.android.extensions.RoundedModalShape
 import io.bry1337.pomfocus.android.ui.app.AppState
@@ -43,7 +48,11 @@ private enum class HomeScreenBottomSheet : BottomSheetDescriptor {
         }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterialApi::class,
+    ExperimentalPermissionsApi::class
+)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
@@ -53,6 +62,19 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    // Move notification permission handling on different composable
+    // Fix issue with version capping
+    val notificationPermissionState =
+        rememberPermissionState(permission = android.Manifest.permission.POST_NOTIFICATIONS)
+    if (!notificationPermissionState.status.isGranted && notificationPermissionState.status.shouldShowRationale) {
+        // TODO Show rationale message in dialog why notification permission is needed
+        // Reference :
+        // https://kubiakdev.medium.com/notification-permission-request-on-android-13-part-2-the-implementation-f512239a9bc
+        // should run inside onclick trigger
+        // notificationPermissionState.launchPermissionRequest()
+    }
+
     val bottomSheetOperation = rememberBottomSheetOperation(
         scope = scope,
         initialBottomSheetDescriptor = HomeScreenBottomSheet.Settings
