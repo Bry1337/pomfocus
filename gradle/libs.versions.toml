@@ -22,13 +22,14 @@ google-maps = "18.1.0"
 google-services = "4.3.14"
 gradle = "7.3.1"
 gradle-versions = "0.46.0"
+gson = "2.10.1"
 hilt = "2.45"
 kotlin = "1.8.10"
 kotlin-compiler = "1.4.3" # Referenced in build.gradle composeOptions
 kotlinter = "3.12.0"
 kotlinx-coroutines = "1.6.4"
 kotlinx-datetime = "0.4.0"
-kotlinx-serialization = "1.4.1"
+kotlinx-serialization = "1.5.0"
 ktor = "2.1.3"
 maps-compose = "2.7.2"
 sqldelight = "1.5.5"
@@ -87,6 +88,11 @@ google-accompanist-placeholder = { module = "com.google.accompanist:accompanist-
 # Google maps
 google-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "google-maps" }
 google-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "maps-compose"}
+
+# Gson
+google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
+# Image loader
 io-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 
 # Coroutines, datetime and serialization
@@ -125,4 +131,5 @@ android-library = { id = "com.android.library", version.ref = "gradle" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 kotlin-multiplatform =  { id = "multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization"}
 gradle-versions = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions" }
