@@ -3,9 +3,10 @@
 plugins {
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.android.application)
+    alias(libs.plugins.dagger.hilt)
     kotlin("android")
     kotlin("kapt")
-    alias(libs.plugins.dagger.hilt)
+    id("org.jetbrains.kotlin.plugin.serialization")
 
 }
 
@@ -54,9 +55,12 @@ dependencies {
     // Hilt
     implementation(libs.android.hilt)
     kapt(libs.android.hilt.compiler)
-
     // Core / Notification Compat
     implementation(libs.androidx.core)
+    // Android DataStore
+    implementation(libs.androidx.datastore.preferences)
+    // Serializer
+    implementation(libs.kotlinx.serialization.json)
 }
 
 // Allow references to generated code
