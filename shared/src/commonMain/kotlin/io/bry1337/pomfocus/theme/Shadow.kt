@@ -26,7 +26,7 @@ object Shadows {
 
     val sm = listOf(
         Shadow(offsetY = 3, blurRadius = 6),
-        Shadow(offsetY = 3, blurRadius = 6),
+        Shadow(offsetY = 3, blurRadius = 6)
     )
 
     val md = listOf(

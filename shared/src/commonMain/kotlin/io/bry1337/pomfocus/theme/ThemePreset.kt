@@ -32,7 +32,6 @@ ThemePreset(private val palette: TonalColorPalette, private val swatchName: Stri
     GREY(MaterialColorPalette, MaterialColorPalette.SWATCH_NAME_GREY),
     BLUE_GREY(MaterialColorPalette, MaterialColorPalette.SWATCH_NAME_BLUE_GREY);
 
-
     fun primaryColor(isDarkScheme: Boolean): Long = palette.primaryColor(swatchName, isDarkScheme)
     fun primaryContentColor(isDarkScheme: Boolean): Long =
         palette.primaryContentColor(swatchName, isDarkScheme)

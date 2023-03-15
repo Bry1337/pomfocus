@@ -1,7 +1,9 @@
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
+    kotlin("plugin.serialization")
     id("com.android.library")
+    id("com.squareup.sqldelight")
     id("org.jmailen.kotlinter")
 }
 
@@ -23,13 +25,37 @@ kotlin {
     }
     
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                // Ktor for networking client
+                // https://ktor.io/docs/getting-started-ktor-client-multiplatform-mobile.html
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.serialization)
+
+                // Kotlinx Coroutines to be available on Shared common
+                // https://github.com/Kotlin/kotlinx.coroutines
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.serialization.core)
+                implementation(libs.kotlinx.serialization.json)
+
+                // Flow coroutine library for SQL Delight
+                // https://cashapp.github.io/sqldelight/2.0.0-alpha05/multiplatform_sqlite/coroutines/
+                implementation(libs.sqldelight.coroutines)
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                // Ktor for networking client
+                implementation(libs.ktor.client.android)
+                // SQL Delight for local database
+                implementation(libs.sqldelight.android.driver)
+            }
+        }
         val androidTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
