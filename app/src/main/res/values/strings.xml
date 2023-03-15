@@ -8,6 +8,8 @@
     <string name="settings_login_button">Log In</string>
     <string name="settings_sign_up_button">Sign up</string>
     <string name="settings_developer_button">Developer Settings</string>
+    <string name="settings_theme_button">Theme</string>
+    <string name="settings_dark_mode_button">Dark Mode</string>
 
     <!-- Home Scren -->
     <string name="home_screen_start_button">START</string>

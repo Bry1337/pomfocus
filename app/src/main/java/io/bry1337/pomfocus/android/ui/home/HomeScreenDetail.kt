@@ -89,7 +89,8 @@ fun HomeScreenDetail(
             Spacer(modifier = Modifier.height(DimensionConstants.vSpacing.md.dp))
             Text(
                 text = stringResource(id = pomodoroQuote),
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.labelLarge,
+                color = timerTextColor
             )
         }
     }
