@@ -27,9 +27,9 @@ internal object MaterialColorPalette : TonalColorPalette {
     const val SWATCH_NAME_GREY = "grey"
     const val SWATCH_NAME_BLUE_GREY = "grey"
 
-
     override val swatches = mapOf(
-        ColorSwatch(SWATCH_NAME_RED, 50 to 0xffFFEBEE,
+        ColorSwatch(
+            SWATCH_NAME_RED, 50 to 0xffFFEBEE,
             100 to 0xffFFCDD2,
             200 to 0xffEF9A9A,
             300 to 0xffE57373,
@@ -40,7 +40,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xffC62828,
             900 to 0xffB71C1C
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_PINK, 50 to 0xffFCE4EC,
+        ColorSwatch(
+            SWATCH_NAME_PINK, 50 to 0xffFCE4EC,
             100 to 0xffF8BBD0,
             200 to 0xffF48FB1,
             300 to 0xffF06292,
@@ -51,7 +52,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xffAD1457,
             900 to 0xff880E4F
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_PURPLE, 50 to 0xffF3E5F5,
+        ColorSwatch(
+            SWATCH_NAME_PURPLE, 50 to 0xffF3E5F5,
             100 to 0xffE1BEE7,
             200 to 0xffCE93D8,
             300 to 0xffBA68C8,
@@ -62,7 +64,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff6A1B9A,
             900 to 0xff4A148C
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_DEEP_PURPLE, 50 to 0xffEDE7F6,
+        ColorSwatch(
+            SWATCH_NAME_DEEP_PURPLE, 50 to 0xffEDE7F6,
             100 to 0xffD1C4E9,
             200 to 0xffB39DDB,
             300 to 0xff9575CD,
@@ -73,7 +76,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff4527A0,
             900 to 0xff311B92
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_INDIGO, 50 to 0xffE8EAF6,
+        ColorSwatch(
+            SWATCH_NAME_INDIGO, 50 to 0xffE8EAF6,
             100 to 0xffC5CAE9,
             200 to 0xff9FA8DA,
             300 to 0xff7986CB,
@@ -84,7 +88,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff283593,
             900 to 0xff1A237E
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_BLUE, 50 to 0xffE3F2FD,
+        ColorSwatch(
+            SWATCH_NAME_BLUE, 50 to 0xffE3F2FD,
             100 to 0xffBBDEFB,
             200 to 0xff90CAF9,
             300 to 0xff64B5F6,
@@ -95,7 +100,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff1565C0,
             900 to 0xff0D47A1
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_LIGHT_BLUE, 50 to 0xffE1F5FE,
+        ColorSwatch(
+            SWATCH_NAME_LIGHT_BLUE, 50 to 0xffE1F5FE,
             100 to 0xffB3E5FC,
             200 to 0xff81D4FA,
             300 to 0xff4FC3F7,
@@ -106,7 +112,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff0277BD,
             900 to 0xff01579B
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_CYAN, 50 to 0xffE0F7FA,
+        ColorSwatch(
+            SWATCH_NAME_CYAN, 50 to 0xffE0F7FA,
             100 to 0xffB2EBF2,
             200 to 0xff80DEEA,
             300 to 0xff4DD0E1,
@@ -117,7 +124,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff00838F,
             900 to 0xff006064
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_TEAL, 50 to 0xffE0F2F1,
+        ColorSwatch(
+            SWATCH_NAME_TEAL, 50 to 0xffE0F2F1,
             100 to 0xffB2DFDB,
             200 to 0xff80CBC4,
             300 to 0xff4DB6AC,
@@ -128,7 +136,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff00695C,
             900 to 0xff004D40
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_GREEN, 50 to 0xffE8F5E9,
+        ColorSwatch(
+            SWATCH_NAME_GREEN, 50 to 0xffE8F5E9,
             100 to 0xffC8E6C9,
             200 to 0xffA5D6A7,
             300 to 0xff81C784,
@@ -139,7 +148,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff2E7D32,
             900 to 0xff1B5E20
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_LIGHT_GREEN, 50 to 0xffF1F8E9,
+        ColorSwatch(
+            SWATCH_NAME_LIGHT_GREEN, 50 to 0xffF1F8E9,
             100 to 0xffDCEDC8,
             200 to 0xffC5E1A5,
             300 to 0xffAED581,
@@ -150,7 +160,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff558B2F,
             900 to 0xff33691E
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_LIME, 50 to 0xffF9FBE7,
+        ColorSwatch(
+            SWATCH_NAME_LIME, 50 to 0xffF9FBE7,
             100 to 0xffF0F4C3,
             200 to 0xffE6EE9C,
             300 to 0xffDCE775,
@@ -161,7 +172,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff9E9D24,
             900 to 0xff827717
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_YELLOW, 50 to 0xffFFFDE7,
+        ColorSwatch(
+            SWATCH_NAME_YELLOW, 50 to 0xffFFFDE7,
             100 to 0xffFFF9C4,
             200 to 0xffFFF59D,
             300 to 0xffFFF176,
@@ -172,7 +184,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xffF9A825,
             900 to 0xffF57F17
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_AMBER, 50 to 0xffFFF8E1,
+        ColorSwatch(
+            SWATCH_NAME_AMBER, 50 to 0xffFFF8E1,
             100 to 0xffFFECB3,
             200 to 0xffFFE082,
             300 to 0xffFFD54F,
@@ -183,7 +196,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xffFF8F00,
             900 to 0xffFF6F00
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_ORANGE, 50 to 0xffFFF3E0,
+        ColorSwatch(
+            SWATCH_NAME_ORANGE, 50 to 0xffFFF3E0,
             100 to 0xffFFE0B2,
             200 to 0xffFFCC80,
             300 to 0xffFFB74D,
@@ -194,7 +208,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xffEF6C00,
             900 to 0xffE65100
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_DEEP_ORANGE, 50 to 0xffFBE9E7,
+        ColorSwatch(
+            SWATCH_NAME_DEEP_ORANGE, 50 to 0xffFBE9E7,
             100 to 0xffFFCCBC,
             200 to 0xffFFAB91,
             300 to 0xffFF8A65,
@@ -205,7 +220,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xffD84315,
             900 to 0xffBF360C
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_BROWN, 50 to 0xffEFEBE9,
+        ColorSwatch(
+            SWATCH_NAME_BROWN, 50 to 0xffEFEBE9,
             100 to 0xffD7CCC8,
             200 to 0xffBCAAA4,
             300 to 0xffA1887F,
@@ -216,7 +232,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff4E342E,
             900 to 0xff3E2723
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_GREY, 50 to 0xffFAFAFA,
+        ColorSwatch(
+            SWATCH_NAME_GREY, 50 to 0xffFAFAFA,
             100 to 0xffF5F5F5,
             200 to 0xffEEEEEE,
             300 to 0xffE0E0E0,
@@ -227,7 +244,8 @@ internal object MaterialColorPalette : TonalColorPalette {
             800 to 0xff424242,
             900 to 0xff212121
         ).asNamedPair(),
-        ColorSwatch(SWATCH_NAME_BLUE_GREY, 50 to 0xffECEFF1,
+        ColorSwatch(
+            SWATCH_NAME_BLUE_GREY, 50 to 0xffECEFF1,
             100 to 0xffCFD8DC,
             200 to 0xffB0BEC5,
             300 to 0xff90A4AE,

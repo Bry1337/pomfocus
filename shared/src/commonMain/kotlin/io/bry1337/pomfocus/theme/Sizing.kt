@@ -32,7 +32,6 @@ interface Sizing {
     }
 }
 
-
 internal data class SizingImpl(
     override val xs: Int,
     override val sm: Int,

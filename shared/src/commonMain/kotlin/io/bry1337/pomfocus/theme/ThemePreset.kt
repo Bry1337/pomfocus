@@ -9,7 +9,8 @@ import io.bry1337.pomfocus.theme.palettes.TonalColorPalette
  * Copyright (c) 2023 bry1337.github.io. All rights reserved.
  */
 
-enum class ThemePreset(private val palette: TonalColorPalette, private val swatchName: String) {
+enum class
+ThemePreset(private val palette: TonalColorPalette, private val swatchName: String) {
     DEFAULT(DefaultColorPalette, DefaultColorPalette.SWATCH_NAME_DEFAULT),
     RED(MaterialColorPalette, MaterialColorPalette.SWATCH_NAME_RED),
     PINK(MaterialColorPalette, MaterialColorPalette.SWATCH_NAME_PINK),
@@ -30,7 +31,6 @@ enum class ThemePreset(private val palette: TonalColorPalette, private val swatc
     BROWN(MaterialColorPalette, MaterialColorPalette.SWATCH_NAME_BROWN),
     GREY(MaterialColorPalette, MaterialColorPalette.SWATCH_NAME_GREY),
     BLUE_GREY(MaterialColorPalette, MaterialColorPalette.SWATCH_NAME_BLUE_GREY);
-
 
     fun primaryColor(isDarkScheme: Boolean): Long = palette.primaryColor(swatchName, isDarkScheme)
     fun primaryContentColor(isDarkScheme: Boolean): Long =
