@@ -6,7 +6,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.bry1337.pomfocus.android.model.UserPreset
+import io.bry1337.pomfocus.android.services.prefs.PreferencesManager
 import io.bry1337.pomfocus.android.ui.theme.ThemeManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,7 +22,8 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class SettingsModalViewModel @Inject constructor() : ViewModel() {
+class SettingsModalViewModel @Inject constructor(private val preferencesManager: PreferencesManager) :
+    ViewModel() {
     val themePresetNameList = ThemeManager.themePresetNames
     var theme by mutableStateOf(ThemeManager.theme)
         private set
@@ -37,12 +44,23 @@ class SettingsModalViewModel @Inject constructor() : ViewModel() {
     fun onPresetNameChanged(presetName: String) {
         viewModelScope.launch {
             ThemeManager.onThemePresetNameChanged(presetName)
+            flowOf(theme)
+                .flowOn(Dispatchers.IO)
+                .map { theme.themePreset }
+                .collect { themeName ->
+                    preferencesManager.setThemePreset(UserPreset(themeName))
+                }
         }
     }
 
     fun onDarkModeSwitch(isChecked: Boolean) {
         viewModelScope.launch {
             ThemeManager.onDarkSchemeChanged(isChecked)
+            flowOf(isChecked).flowOn(Dispatchers.IO).map {
+                it
+            }.collect {
+                preferencesManager.setDarkScheme(isChecked)
+            }
         }
         isDarkMode = isChecked
     }
