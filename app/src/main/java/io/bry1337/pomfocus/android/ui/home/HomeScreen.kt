@@ -6,17 +6,23 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -58,6 +64,7 @@ private enum class HomeScreenBottomSheet : BottomSheetDescriptor {
 fun HomeScreen(
     appState: AppState,
     modifier: Modifier = Modifier,
+    lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -83,6 +90,20 @@ fun HomeScreen(
         bottomSheetOperation.presentSheet(HomeScreenBottomSheet.Settings)
     }
     val currentPhase = viewModel.pomodoroCurrentIndex
+    val taskList = viewModel.taskList
+    DisposableEffect(lifeCycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) {
+                bottomSheetOperation.togglePresentation
+            }
+        }
+        lifeCycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifeCycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
     ModalBottomSheetLayout(
         sheetState = bottomSheetOperation.sheetState,
         sheetContent = {
@@ -110,6 +131,12 @@ fun HomeScreen(
                         onStartTimer = viewModel::togglePomodoroMainAction,
                         onForward = viewModel::forwardPomodoroState
                     )
+                }
+
+                items(items = taskList, key = {
+                        task ->
+                    task.id
+                }) {
                 }
             }
         }

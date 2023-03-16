@@ -41,6 +41,10 @@ kotlin {
                 // Flow coroutine library for SQL Delight
                 // https://cashapp.github.io/sqldelight/2.0.0-alpha05/multiplatform_sqlite/coroutines/
                 implementation(libs.sqldelight.coroutines)
+
+                // Kotlinx Datetime
+                // https://github.com/Kotlin/kotlinx-datetime
+                implementation(libs.kotlinx.datetime)
             }
         }
         val commonTest by getting {

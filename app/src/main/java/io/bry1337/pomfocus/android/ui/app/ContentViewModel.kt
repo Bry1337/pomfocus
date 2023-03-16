@@ -3,7 +3,6 @@ package io.bry1337.pomfocus.android.ui.app
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,13 +11,14 @@ import io.bry1337.pomfocus.android.services.prefs.PreferencesManager
 import io.bry1337.pomfocus.android.ui.theme.ThemeManager
 import io.bry1337.pomfocus.theme.DurationConstants
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
@@ -28,44 +28,41 @@ import javax.inject.Inject
  * Copyright (c) 2023 bry1337.github.io. All rights reserved.
  */
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ContentViewModel @Inject constructor(preferencesManager: PreferencesManager) : ViewModel() {
     val themeFlow = ThemeManager.themeFlow
     var activeScene by mutableStateOf(AppScene.SPLASH)
     var isActive by mutableStateOf(false)
+    var isThemeDone by mutableStateOf(false)
+    var isSchemeDone by mutableStateOf(false)
 
     init {
         viewModelScope.launch {
-            preferencesManager.themePreset.flowOn(Dispatchers.Default)
-                .map { dataString ->
-                    dataString?.let {
-                        val userPreset = Json.decodeFromString<UserPreset>(dataString)
-                        ThemeManager.onThemePresetNameChanged(userPreset.themePreset.name)
-                    }
-                }.flatMapLatest {
-                    preferencesManager.isDarkScheme.flowOn(Dispatchers.Default)
-                        .map { isDarkScheme ->
-                            isDarkScheme?.let {
-                                ThemeManager.onDarkSchemeChanged(it)
-                            }
+            withContext(Dispatchers.Main) {
+                preferencesManager.themePreset.flowOn(Dispatchers.Default)
+                    .takeWhile { !isThemeDone }.collect { dataString ->
+                        dataString?.let {
+                            isThemeDone = true
+                            val userPreset = Json.decodeFromString<UserPreset>(dataString)
+                            ThemeManager.onThemePresetNameChanged(userPreset.themePreset.name)
                         }
-                }.collect {
-                    proceedToNextRoute()
-                }
+                    }
+            }
         }
-    }
 
-    private suspend fun proceedToNextRoute() {
-        snapshotFlow {
-            isActive
-        }.filter {
-            it
-        }.onStart {
-            delay(DurationConstants.splashDurationSeconds.toLong() * 1000)
-        }.map {
-            AppScene.MAIN
-        }.collect {
-            activeScene = it
+        viewModelScope.launch {
+            withContext(Dispatchers.Main) {
+                preferencesManager.isDarkScheme.flowOn(Dispatchers.Default).takeWhile { !isSchemeDone }.map { isDarkScheme ->
+                    isDarkScheme?.let {
+                        ThemeManager.onDarkSchemeChanged(isDarkScheme)
+                    }
+                }.collect {
+                    isSchemeDone = true
+                    delay(DurationConstants.splashDurationSeconds * 1000L)
+                    activeScene = AppScene.MAIN
+                }
+            }
         }
     }
 }
