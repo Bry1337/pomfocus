@@ -39,8 +39,10 @@ class ContentViewModel @Inject constructor(preferencesManager: PreferencesManage
 
     init {
         viewModelScope.launch {
+            // Dispatch to Main thread to be able to update the mutable state of variable
+            // after running the flow in IO Dispatcher
             withContext(Dispatchers.Main) {
-                preferencesManager.themePreset.flowOn(Dispatchers.Default)
+                preferencesManager.themePreset.flowOn(Dispatchers.IO)
                     .takeWhile { !isThemeDone }.collect { dataString ->
                         dataString?.let {
                             isThemeDone = true
@@ -53,7 +55,7 @@ class ContentViewModel @Inject constructor(preferencesManager: PreferencesManage
 
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
-                preferencesManager.isDarkScheme.flowOn(Dispatchers.Default).takeWhile { !isSchemeDone }.map { isDarkScheme ->
+                preferencesManager.isDarkScheme.flowOn(Dispatchers.IO).takeWhile { !isSchemeDone }.map { isDarkScheme ->
                     isDarkScheme?.let {
                         ThemeManager.onDarkSchemeChanged(isDarkScheme)
                     }
