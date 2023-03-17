@@ -1,13 +1,9 @@
 package io.bry1337.pomfocus.android.ui.home
 
-import android.content.Context
-import android.media.MediaPlayer
-import android.media.RingtoneManager
 import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,11 +12,12 @@ import io.bry1337.pomfocus.android.model.Pomodoro
 import io.bry1337.pomfocus.android.model.PomodoroState
 import io.bry1337.pomfocus.android.ui.notification.NotificationProvider
 import io.bry1337.pomfocus.android.utils.TimerConstants
-import io.bry1337.pomfocus.theme.AppContext
+import io.bry1337.pomfocus.domain.utils.Faker
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,10 +28,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor() : ViewModel() {
-    private val selectedRingtoneUri =
-        RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-    private val notificationPlayer =
-        MediaPlayer.create(AppContext.getContext() as Context, selectedRingtoneUri)
     val pomodoroModels = Pomodoro.pomodoroList
     var pomodoroCurrentIndex by mutableStateOf(0)
     private var timerScope: Job? = null
@@ -43,6 +36,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     private var runningSeconds by mutableStateOf(TimerConstants.DEFAULT_SECONDS)
     private var isTimeRunning by mutableStateOf(false)
     private var pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
+    var taskList by mutableStateOf(Faker.task.buildMany())
     var formattedRunningTime by mutableStateOf(
         String.format(
             "%02d:%02d",
@@ -138,7 +132,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                 runningMinutes = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalMinutes
                 pomodoroTotalTime = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds
                 pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
-                playNotificationSound(
+                showNotification(
                     notifTitle = R.string.notification_pomodoro_finished_title,
                     notifContent = R.string.notification_pomodoro_finished
                 )
@@ -150,7 +144,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                 runningMinutes = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalMinutes
                 pomodoroTotalTime = pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds
                 pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
-                playNotificationSound(
+                showNotification(
                     notifTitle =
                     R.string.notification_break_finished_title,
                     notifContent = R.string.notification_break_finished
@@ -163,12 +157,9 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     /**
      * Play notification sound queue in flow
      */
-    private fun playNotificationSound(@StringRes notifTitle: Int, @StringRes notifContent: Int) {
+    private fun showNotification(@StringRes notifTitle: Int, @StringRes notifContent: Int) {
         viewModelScope.launch {
-            snapshotFlow {
-                notificationPlayer
-            }.collect { player ->
-                player.start()
+            flowOf(notifTitle, notifContent).collect {
                 NotificationProvider.showNotification(notifTitle, notifContent)
             }
         }

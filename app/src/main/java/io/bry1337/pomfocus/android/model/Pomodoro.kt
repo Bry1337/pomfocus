@@ -65,7 +65,7 @@ data class Pomodoro(
                     pomodoroQuote = R.string.home_screen_focus_label_4,
                     pomodoroTotalSeconds = TimerConstants.DEFAULT_BREAK_TOTAL_SECONDS,
                     pomodoroTotalMinutes = TimerConstants.DEFAULT_BREAK_MINUTES,
-                    isForwardable = false,
+                    isForwardable = true,
                     state = PomodoroState.BREAK_RUNNING
                 )
             )
