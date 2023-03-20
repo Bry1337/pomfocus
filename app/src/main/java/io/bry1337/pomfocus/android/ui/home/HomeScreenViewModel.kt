@@ -12,13 +12,15 @@ import io.bry1337.pomfocus.android.model.Pomodoro
 import io.bry1337.pomfocus.android.model.PomodoroState
 import io.bry1337.pomfocus.android.ui.notification.NotificationProvider
 import io.bry1337.pomfocus.android.utils.TimerConstants
-import io.bry1337.pomfocus.domain.utils.Faker
+import io.bry1337.pomfocus.domain.models.Task
+import io.bry1337.pomfocus.domain.utils.randomUUID
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import javax.inject.Inject
 
 /**
@@ -36,7 +38,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     private var runningSeconds by mutableStateOf(TimerConstants.DEFAULT_SECONDS)
     private var isTimeRunning by mutableStateOf(false)
     private var pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
-    var taskList by mutableStateOf(Faker.task.buildMany())
+    var taskList by mutableStateOf(listOf<Task>())
     var formattedRunningTime by mutableStateOf(
         String.format(
             "%02d:%02d",
@@ -45,6 +47,12 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
         )
     )
         private set
+
+    init {
+        taskList = taskList.toMutableList().also {
+            it.add(Task.buildEmpty())
+        }
+    }
 
     /**
      * Forward function
@@ -163,5 +171,15 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                 NotificationProvider.showNotification(notifTitle, notifContent)
             }
         }
+    }
+
+    /**
+     * Add New Task onDone from phone keyboard
+     */
+    fun addNewTask(taskDescription: String) {
+        taskList = taskList.toMutableList().also {
+            it.add(index = 0, Task.build(randomUUID(), taskDescription, Clock.System.now()))
+        }
+        println("HomeViewModel: $taskList")
     }
 }

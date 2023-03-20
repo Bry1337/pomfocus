@@ -20,4 +20,9 @@ interface Generator<T> {
             build(overrides = overrides)
         }
     }
+
+    fun <T> getOverrideOr(overrides: Map<String, Any>, key: String, or: T): T {
+        @Suppress("UNCHECKED_CAST")
+        return (overrides[key] as? T) ?: or
+    }
 }

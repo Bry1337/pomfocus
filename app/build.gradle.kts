@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     // Serializer
     implementation(libs.kotlinx.serialization.json)
+    // Kotlin Instant Date Time
+    implementation(libs.kotlinx.datetime)
 }
 
 // Allow references to generated code
