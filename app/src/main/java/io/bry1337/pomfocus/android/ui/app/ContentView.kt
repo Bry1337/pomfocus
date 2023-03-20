@@ -1,13 +1,13 @@
 package io.bry1337.pomfocus.android.ui.app
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -17,13 +17,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import io.bry1337.pomfocus.android.ui.theme.AppTheme
+import kotlinx.coroutines.launch
 
 /**
  * Created by Bryan on 2/28/23.
  * Copyright (c) 2023 bry1337.github.io. All rights reserved.
  */
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContentView(
     viewModel: ContentViewModel = hiltViewModel(),
@@ -33,6 +33,7 @@ fun ContentView(
     val appState = rememberAppState()
     val currentFinishActivity by rememberUpdatedState(finishActivity)
     val theme = viewModel.themeFlow.collectAsState().value
+    val scope = rememberCoroutineScope()
 
     DisposableEffect(lifeCycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -51,7 +52,9 @@ fun ContentView(
     }
 
     LaunchedEffect(key1 = viewModel.activeScene) {
-        appState.router.navigateToScene(viewModel.activeScene)
+        scope.launch {
+            appState.router.navigateToScene(viewModel.activeScene)
+        }
     }
 
     AppTheme(theme = theme) {
@@ -68,6 +71,5 @@ fun ContentView(
 @Preview
 @Composable
 fun ContentViewPreview() {
-    ContentView() {
-    }
+    ContentView() {}
 }

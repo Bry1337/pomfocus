@@ -1,5 +1,6 @@
 package io.bry1337.pomfocus.domain.models
 
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
@@ -17,6 +18,10 @@ data class Task(
     companion object {
         fun build(id: String, description: String, dateTime: Instant): Task {
             return Task(id, description, dateTime)
+        }
+
+        fun buildEmpty(): Task {
+            return Task("0", "", Clock.System.now())
         }
     }
 }

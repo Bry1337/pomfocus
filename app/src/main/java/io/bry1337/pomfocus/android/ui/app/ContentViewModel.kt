@@ -48,6 +48,7 @@ class ContentViewModel @Inject constructor(preferencesManager: PreferencesManage
                             isThemeDone = true
                             val userPreset = Json.decodeFromString<UserPreset>(dataString)
                             ThemeManager.onThemePresetNameChanged(userPreset.themePreset.name)
+                            println("ContentViewModel: datastring: $dataString")
                         }
                     }
             }
@@ -58,11 +59,13 @@ class ContentViewModel @Inject constructor(preferencesManager: PreferencesManage
                 preferencesManager.isDarkScheme.flowOn(Dispatchers.IO).takeWhile { !isSchemeDone }.map { isDarkScheme ->
                     isDarkScheme?.let {
                         ThemeManager.onDarkSchemeChanged(isDarkScheme)
+                        println("ContentViewModel: darkscheme: $isDarkScheme")
                     }
                 }.collect {
                     isSchemeDone = true
                     delay(DurationConstants.splashDurationSeconds * 1000L)
                     activeScene = AppScene.MAIN
+                    println("ContentViewModel: go to main scene")
                 }
             }
         }

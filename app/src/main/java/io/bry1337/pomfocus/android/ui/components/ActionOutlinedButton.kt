@@ -26,6 +26,8 @@ fun ActionOutlinedButton(
     buttonContainerColor: Color = MaterialTheme.colorScheme.primary,
     buttonContentColor: Color = MaterialTheme.colorScheme.onPrimary,
     @DrawableRes icon: Int? = null,
+    backgroundColor: Color = MaterialTheme.colorScheme.onBackground,
+    iconModifier: Modifier = Modifier,
     enabled: Boolean = true,
     action: () -> Unit = {}
 ) {
@@ -40,7 +42,7 @@ fun ActionOutlinedButton(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (icon != null) {
-                AppIconButton(icon = icon)
+                AppIconButton(icon = icon, modifier = iconModifier, backgroundColor = backgroundColor)
             }
             Text(text = text, modifier = textModifier)
         }
