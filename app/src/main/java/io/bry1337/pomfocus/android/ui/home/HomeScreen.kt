@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -16,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -136,10 +139,19 @@ fun HomeScreen(
                 itemsIndexed(items = taskList, key = { _, task ->
                     task.id
                 }) { index, task ->
+                    val placeholderVal = if (index == 0) {
+                        stringResource(id = R.string.home_screen_task_label)
+                    } else {
+                        ""
+                    }
                     AppTaskTextField(
                         modifier = Modifier.themePaddingV(sized = AppSizing.sm),
                         enabled = index == 0,
-                        keyboardOnDone = viewModel::addNewTask
+                        placeholderText = placeholderVal,
+                        keyboardOnDone = viewModel::addNewTask,
+                        deleteAction = {
+                            viewModel.deleteTask(task)
+                        }
                     )
                 }
             }
@@ -152,6 +164,13 @@ private fun TopAppbar(onSettingsPressed: () -> Unit) {
     AppNavBar(
         leadingItem = {
             AppNavBarItem(icon = R.drawable.ic_menu)
+        },
+        title = {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
         },
         trailingItem = {
             AppNavBarItem(icon = R.drawable.ic_settings, action = onSettingsPressed)

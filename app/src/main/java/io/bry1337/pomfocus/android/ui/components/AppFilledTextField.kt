@@ -63,6 +63,7 @@ fun AppFilledTextField(
         textColor = textColor,
         backgroundColor = backgroundColor,
         cursorColor = textColor,
+        placeholderColor = textColor,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent
     )

@@ -49,6 +49,13 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
         private set
 
     init {
+        buildEmptyTask()
+    }
+
+    /**
+     * Populate empty task for listing task
+     */
+    private fun buildEmptyTask() {
         taskList = taskList.toMutableList().also {
             it.add(Task.buildEmpty())
         }
@@ -144,6 +151,9 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                     notifTitle = R.string.notification_pomodoro_finished_title,
                     notifContent = R.string.notification_pomodoro_finished
                 )
+                taskList = taskList.toMutableList().also {
+                    it.clear()
+                }
             }
 
             PomodoroState.BREAK_START, PomodoroState.BREAK_RUNNING -> {
@@ -157,6 +167,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                     R.string.notification_break_finished_title,
                     notifContent = R.string.notification_break_finished
                 )
+                buildEmptyTask()
             }
         }
         isTimeRunning = !isTimeRunning
@@ -178,8 +189,21 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
      */
     fun addNewTask(taskDescription: String) {
         taskList = taskList.toMutableList().also {
-            it.add(index = 0, Task.build(randomUUID(), taskDescription, Clock.System.now()))
+            if (taskDescription.isNotBlank()) {
+                it.add(index = 0, Task.build(randomUUID(), taskDescription, Clock.System.now()))
+            }
         }
         println("HomeViewModel: $taskList")
+    }
+
+    /**
+     * Delete tasks added in during pomodoro
+     */
+    fun deleteTask(task: Task) {
+        taskList = taskList.toMutableList().also {
+            if (task.id != Task.buildEmpty().id) {
+                it.remove(task)
+            }
+        }
     }
 }
