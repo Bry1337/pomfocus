@@ -20,6 +20,7 @@
     <string name="home_screen_focus_label_2">Keep going, just a little more!</string>
     <string name="home_screen_focus_label_3">Get some fresh air break</string>
     <string name="home_screen_focus_label_4">Rehydrate and breathe</string>
+    <string name="home_screen_task_label">Tasks</string>
 
     <!-- Notification -->
     <string name="notification_pomodoro_finished_title">Break time!</string>
