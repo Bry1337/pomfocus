@@ -46,7 +46,7 @@ object NotificationProvider {
     ) {
         createNotificationChannel(descriptionText = channelDescription)
         val notificationBuilder = NotificationCompat.Builder(appContext, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_menu)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(appContext.getString(contentTitle))
             .setContentText(appContext.getString(contentText))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
