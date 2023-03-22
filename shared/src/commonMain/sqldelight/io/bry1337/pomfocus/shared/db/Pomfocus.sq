@@ -1,0 +1,25 @@
+import kotlinx.datetime.Instant;
+
+-- Task Table
+
+CREATE TABLE task (
+    id TEXT NOT NULL PRIMARY KEY,
+    description TEXT NOT NULL,
+    datetime INTEGER AS Instant
+);
+
+insertTask:
+INSERT INTO task(id, description, datetime)
+VALUES (?, ?, ?);
+
+getTask:
+SELECT * FROM task WHERE id = :id;
+
+listAllTasks:
+SELECT * FROM task;
+
+removeTask:
+DELETE FROM task WHERE id = :id;
+
+removeTasks:
+DELETE FROM task;

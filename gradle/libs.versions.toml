@@ -133,3 +133,4 @@ kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 kotlin-multiplatform =  { id = "multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization"}
 gradle-versions = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
