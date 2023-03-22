@@ -45,6 +45,10 @@ kotlin {
                 // Kotlinx Datetime
                 // https://github.com/Kotlin/kotlinx-datetime
                 implementation(libs.kotlinx.datetime)
+
+                // SQLDelight
+                // https://cashapp.github.io/sqldelight/2.0.0-alpha05/multiplatform_sqlite/
+                implementation(libs.sqldelight.coroutines)
             }
         }
         val commonTest by getting {
@@ -57,6 +61,7 @@ kotlin {
                 // Ktor for networking client
                 implementation(libs.ktor.client.android)
                 // SQL Delight for local database
+                // https://cashapp.github.io/sqldelight/2.0.0-alpha05/multiplatform_sqlite/
                 implementation(libs.sqldelight.android.driver)
             }
         }
@@ -69,6 +74,15 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                // SQL Delight for local database
+                // https://cashapp.github.io/sqldelight/2.0.0-alpha05/multiplatform_sqlite/
+                implementation(libs.sqldelight.native.driver)
+
+                // Ktor for networking client
+                // https://ktor.io/docs/getting-started-ktor-client-multiplatform-mobile.html#ktor-dependencies
+                implementation(libs.ktor.client.ios)
+            }
         }
         val iosX64Test by getting
         val iosArm64Test by getting
@@ -88,5 +102,11 @@ android {
     defaultConfig {
         minSdk = 26
         targetSdk = 32
+    }
+}
+
+sqldelight {
+    database("Database") {
+        packageName = "io.bry1337.pomfocus.shared.db"
     }
 }
