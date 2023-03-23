@@ -26,10 +26,3 @@ val Database.Companion.shared: Database by lazy {
         taskAdapter = Task.Adapter(datetimeAdapter = instantAdapter)
     )
 }
-
-// fun createDatabase(driverFactory): Database {
-//    val driver = driverFactory.createDriver()
-//    val database = Database(driver)
-//
-//    // Do more work with the database (see below).
-// }
