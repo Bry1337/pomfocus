@@ -19,19 +19,20 @@ import kotlinx.coroutines.withContext
  * Copyright (c) 2023 bry1337.github.io. All rights reserved.
  */
 
-class TaskOpsImpl(private val dispatcher: CoroutineDispatcher = Dispatchers.Default) : TaskOps {
+class TaskOpsImpl(private val dispatcher: CoroutineDispatcher = Dispatchers.Default) :
+    DatabaseModelOps<Task> {
     private val db = Database.shared
     private val scope = CoroutineScope(SupervisorJob() + dispatcher)
 
-    override fun listTasks(pageSize: Long): Flow<List<Task>> {
+    override fun listObjects(pageSize: Long): Flow<List<Task>> {
         return db.pomfocusQueries.listAllTasks().asFlow().mapToList(dispatcher)
     }
 
-    override fun getTask(id: String): Flow<Task> {
+    override fun getObject(id: String): Flow<Task> {
         return db.pomfocusQueries.getTask(id = id).asFlow().mapToOne(dispatcher)
     }
 
-    override suspend fun saveTask(task: Task) {
+    override suspend fun saveObject(task: Task) {
         withContext(scope.coroutineContext) {
             db.pomfocusQueries.insertTask(
                 id = task.id,
@@ -41,7 +42,7 @@ class TaskOpsImpl(private val dispatcher: CoroutineDispatcher = Dispatchers.Defa
         }
     }
 
-    override suspend fun saveTasks(tasks: List<Task>) {
+    override suspend fun saveObjects(tasks: List<Task>) {
         withContext(scope.coroutineContext) {
             tasks.asFlow().map {
                 db.pomfocusQueries.insertTask(
@@ -53,7 +54,7 @@ class TaskOpsImpl(private val dispatcher: CoroutineDispatcher = Dispatchers.Defa
         }
     }
 
-    override suspend fun deleteTask(id: String) {
+    override suspend fun deleteObject(id: String) {
         withContext(scope.coroutineContext) {
             db.pomfocusQueries.removeTask(id = id)
         }

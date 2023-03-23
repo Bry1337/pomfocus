@@ -12,6 +12,9 @@ import io.bry1337.pomfocus.android.model.Pomodoro
 import io.bry1337.pomfocus.android.model.PomodoroState
 import io.bry1337.pomfocus.android.ui.notification.NotificationProvider
 import io.bry1337.pomfocus.android.utils.TimerConstants
+import io.bry1337.pomfocus.db.DatabaseManager
+import io.bry1337.pomfocus.db.DatabaseModelOps
+import io.bry1337.pomfocus.db.TaskOpsImpl
 import io.bry1337.pomfocus.domain.models.Task
 import io.bry1337.pomfocus.domain.utils.randomUUID
 import kotlinx.coroutines.Job
@@ -30,6 +33,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor() : ViewModel() {
+    private val dbOps by lazy {
+        @Suppress("UNCHECKED_CAST")
+        DatabaseManager(managerOps = TaskOpsImpl() as DatabaseModelOps<Any>)
+    }
     val pomodoroModels = Pomodoro.pomodoroList
     var pomodoroCurrentIndex by mutableStateOf(0)
     private var timerScope: Job? = null
