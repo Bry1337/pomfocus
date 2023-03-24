@@ -25,7 +25,7 @@ data class Task(
             return Task("0", "", Clock.System.now())
         }
 
-        fun buildTask(id: String, description: String, dateTime: Instant): DbTask {
+        fun buildDbTask(id: String, description: String, dateTime: Instant): DbTask {
             return DbTask(id = id, description = description, datetime = dateTime)
         }
     }

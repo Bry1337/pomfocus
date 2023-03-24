@@ -158,9 +158,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                     notifTitle = R.string.notification_pomodoro_finished_title,
                     notifContent = R.string.notification_pomodoro_finished
                 )
-                taskList = taskList.toMutableList().also {
-                    it.clear()
-                }
+                saveTasksListed()
             }
 
             PomodoroState.BREAK_START, PomodoroState.BREAK_RUNNING -> {
@@ -178,6 +176,18 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
             }
         }
         isTimeRunning = !isTimeRunning
+    }
+
+    /**
+     * Save tasks list in local device database
+     */
+    private fun saveTasksListed() {
+        viewModelScope.launch {
+            dbOps.saveObjects(taskList)
+            taskList = taskList.toMutableList().also {
+                it.clear()
+            }
+        }
     }
 
     /**
@@ -200,7 +210,6 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                 it.add(index = 0, Task.build(randomUUID(), taskDescription, Clock.System.now()))
             }
         }
-        println("HomeViewModel: $taskList")
     }
 
     /**
