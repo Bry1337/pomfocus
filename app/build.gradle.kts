@@ -63,6 +63,10 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     // Kotlin Instant Date Time
     implementation(libs.kotlinx.datetime)
+    // Charts
+    implementation(libs.compose.chart.core)
+    implementation(libs.compose.chart.compose)
+    implementation(libs.compose.chart.material3)
 }
 
 // Allow references to generated code
