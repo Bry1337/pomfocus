@@ -16,6 +16,7 @@ compose-navigation = "2.5.3"
 compose-hilt-navigation = "1.0.0"
 compose-material3 = "1.1.0-alpha07"
 compose-accompanist = "0.28.0"
+compose-chart = "1.6.4"
 constraint-layout = "1.1.0-alpha04"
 core-version = "1.6.0"
 google-maps = "18.1.0"
@@ -77,6 +78,15 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 
 # Notification Compat
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "core-version"}
+
+
+# Chart Library
+# Includes the core logic for charts and other elements
+compose-chart-core = { module = "com.patrykandpatrick.vico:core", version.ref = "compose-chart" }
+# For Jetpack Compose.
+compose-chart-compose = { module = "com.patrykandpatrick.vico:compose", version.ref = "compose-chart" }
+# For `compose`. Creates a `ChartStyle` based on an M3 Material Theme
+compose-chart-material3 = { module = "com.patrykandpatrick.vico:compose-m3", version.ref = "compose-chart" }
 
 # Google accompanist
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "compose-accompanist" }
