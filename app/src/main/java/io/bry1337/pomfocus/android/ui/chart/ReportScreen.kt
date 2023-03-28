@@ -23,7 +23,7 @@ import io.bry1337.pomfocus.android.ui.theme.AppTheme
 @Composable
 fun ReportScreen(modifier: Modifier = Modifier) {
     val columnChart = columnChart()
-    val chartEntryModelProducer = entryModelOf(4f, 12f, 8f, 16f)
+    val chartEntryModelProducer = entryModelOf(4f, 12f, 8f, 16f, 20f, 36f, 2f)
     Column(modifier = modifier.fillMaxSize()) {
         Chart(
             chart = remember(columnChart) { columnChart },

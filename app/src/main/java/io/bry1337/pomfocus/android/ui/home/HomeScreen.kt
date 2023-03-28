@@ -9,8 +9,12 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Text
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -41,6 +45,7 @@ import io.bry1337.pomfocus.android.ui.theme.AppTheme
 import io.bry1337.pomfocus.android.utils.AppSizing
 import io.bry1337.pomfocus.android.utils.BottomSheetDescriptor
 import io.bry1337.pomfocus.android.utils.rememberBottomSheetOperation
+import kotlinx.coroutines.launch
 
 /**
  * Created by Bryan on 3/1/23.
@@ -84,13 +89,22 @@ fun HomeScreen(
         // should run inside onclick trigger
         // notificationPermissionState.launchPermissionRequest()
     }
-
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
     val bottomSheetOperation = rememberBottomSheetOperation(
         scope = scope,
         initialBottomSheetDescriptor = HomeScreenBottomSheet.Settings
     )
     val onSettingsPressed = {
         bottomSheetOperation.presentSheet(HomeScreenBottomSheet.Settings)
+    }
+    val onDrawerPressed: () -> Unit = {
+        scope.launch {
+            if (drawerState.isOpen) {
+                drawerState.close()
+            } else {
+                drawerState.open()
+            }
+        }
     }
     val currentPhase = viewModel.pomodoroCurrentIndex
     val taskList = viewModel.taskList
@@ -107,52 +121,54 @@ fun HomeScreen(
         }
     }
 
-    ModalBottomSheetLayout(
-        sheetState = bottomSheetOperation.sheetState,
-        sheetContent = {
-            when (bottomSheetOperation.sheetDescriptor) {
-                HomeScreenBottomSheet.Settings -> SettingsModal(appState = appState)
-            }
-        },
-        sheetShape = RoundedModalShape
-    ) {
-        Scaffold(
-            modifier = modifier.fillMaxSize(),
-            topBar = {
-                TopAppbar(onSettingsPressed)
-            }
-        ) {
-            LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
-                item {
-                    HomeScreenDetail(
-                        timerValue = viewModel.formattedRunningTime,
-                        pomodoroTitle = viewModel.pomodoroModels[currentPhase].pomodoroTitle,
-                        pomodoroQuote = viewModel.pomodoroModels[currentPhase].pomodoroQuote,
-                        modifier = Modifier.padding(it),
-                        actionButtonLabel = viewModel.pomodoroModels[currentPhase].mainActionButtonLabel,
-                        isForwardable = viewModel.pomodoroModels[currentPhase].isForwardable,
-                        onStartTimer = viewModel::togglePomodoroMainAction,
-                        onForward = viewModel::forwardPomodoroState
-                    )
+    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
+        ModalDrawerSheet {
+        }
+    }) {
+        ModalBottomSheetLayout(
+            sheetState = bottomSheetOperation.sheetState,
+            sheetContent = {
+                when (bottomSheetOperation.sheetDescriptor) {
+                    HomeScreenBottomSheet.Settings -> SettingsModal(appState = appState)
                 }
-
-                itemsIndexed(items = taskList, key = { _, task ->
-                    task.id
-                }) { index, task ->
-                    val placeholderVal = if (index == 0) {
-                        stringResource(id = R.string.home_screen_task_label)
-                    } else {
-                        ""
+            },
+            sheetShape = RoundedModalShape
+        ) {
+            Scaffold(modifier = modifier.fillMaxSize(), topBar = {
+                TopAppbar(onDrawerPressed = onDrawerPressed, onSettingsPressed)
+            }) {
+                LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
+                    item {
+                        HomeScreenDetail(
+                            timerValue = viewModel.formattedRunningTime,
+                            pomodoroTitle = viewModel.pomodoroModels[currentPhase].pomodoroTitle,
+                            pomodoroQuote = viewModel.pomodoroModels[currentPhase].pomodoroQuote,
+                            modifier = Modifier.padding(it),
+                            actionButtonLabel = viewModel.pomodoroModels[currentPhase].mainActionButtonLabel,
+                            isForwardable = viewModel.pomodoroModels[currentPhase].isForwardable,
+                            onStartTimer = viewModel::togglePomodoroMainAction,
+                            onForward = viewModel::forwardPomodoroState
+                        )
                     }
-                    AppTaskTextField(
-                        modifier = Modifier.themePaddingV(sized = AppSizing.sm),
-                        enabled = index == 0,
-                        placeholderText = placeholderVal,
-                        keyboardOnDone = viewModel::addNewTask,
-                        deleteAction = {
-                            viewModel.deleteTask(task)
+
+                    itemsIndexed(items = taskList, key = { _, task ->
+                        task.id
+                    }) { index, task ->
+                        val placeholderVal = if (index == 0) {
+                            stringResource(id = R.string.home_screen_task_label)
+                        } else {
+                            ""
                         }
-                    )
+                        AppTaskTextField(
+                            modifier = Modifier.themePaddingV(sized = AppSizing.sm),
+                            enabled = index == 0,
+                            placeholderText = placeholderVal,
+                            keyboardOnDone = viewModel::addNewTask,
+                            deleteAction = {
+                                viewModel.deleteTask(task)
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -160,22 +176,18 @@ fun HomeScreen(
 }
 
 @Composable
-private fun TopAppbar(onSettingsPressed: () -> Unit) {
-    AppNavBar(
-        leadingItem = {
-            AppNavBarItem(icon = R.drawable.ic_menu)
-        },
-        title = {
+private fun TopAppbar(onDrawerPressed: () -> Unit, onSettingsPressed: () -> Unit) {
+    AppNavBar(leadingItem = {
+        AppNavBarItem(icon = R.drawable.ic_menu, action = onDrawerPressed)
+    }, title = {
             Text(
                 text = stringResource(id = R.string.app_name),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
-        },
-        trailingItem = {
+        }, trailingItem = {
             AppNavBarItem(icon = R.drawable.ic_settings, action = onSettingsPressed)
-        }
-    )
+        })
 }
 
 @Preview
