@@ -1,6 +1,5 @@
 package io.bry1337.pomfocus.theme
 
-
 /**
  * Created by Bryan on 2/25/23.
  * Copyright (c) 2023 bry1337.github.io. All rights reserved.

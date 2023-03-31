@@ -208,14 +208,10 @@ sealed interface ColorTable {
             val primaryContainer = setAlphaComponent(primary, 0.2)
             val onPrimary = if (isDarkScheme) darkTextColor else lightTextColor
             val (background, onBackground) = derivedBackgroundAndText(
-                isDarkScheme,
-                AppColors.LightBackground,
-                AppColors.DarkBackground
+                themePreset.primaryContainerColor(isDarkScheme)
             )
             val (surface, onSurface) = derivedBackgroundAndText(
-                isDarkScheme,
-                AppColors.LightSurface,
-                AppColors.DarkSurface
+                themePreset.surfaceColor(isDarkScheme)
             )
             val (surfaceVariant, onSurfaceVariant) = derivedBackgroundAndText(
                 isDarkScheme,
@@ -271,6 +267,16 @@ sealed interface ColorTable {
                     themePreset = themePreset
                 )
             }
+        }
+
+        private fun derivedBackgroundAndText(
+            themeBackground: Long,
+            alpha: Double = 1.0
+        ): Pair<Long, Long> {
+            val content =
+                if (shouldUseDarkOn(themeBackground)) AppColors.DarkText else AppColors.LightText
+            val contentWithAlpha = if (alpha < 1.0) setAlphaComponent(content, alpha) else content
+            return Pair(themeBackground, contentWithAlpha)
         }
 
         private fun derivedBackgroundAndText(

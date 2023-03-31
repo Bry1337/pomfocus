@@ -3,8 +3,11 @@
 plugins {
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.android.application)
+    alias(libs.plugins.dagger.hilt)
     kotlin("android")
     kotlin("kapt")
+    id("org.jetbrains.kotlin.plugin.serialization")
+
 }
 
 kotlin.sourceSets.all {
@@ -52,6 +55,18 @@ dependencies {
     // Hilt
     implementation(libs.android.hilt)
     kapt(libs.android.hilt.compiler)
+    // Core / Notification Compat
+    implementation(libs.androidx.core)
+    // Android DataStore
+    implementation(libs.androidx.datastore.preferences)
+    // Serializer
+    implementation(libs.kotlinx.serialization.json)
+    // Kotlin Instant Date Time
+    implementation(libs.kotlinx.datetime)
+    // Charts
+    implementation(libs.compose.chart.core)
+    implementation(libs.compose.chart.compose)
+    implementation(libs.compose.chart.material3)
 }
 
 // Allow references to generated code

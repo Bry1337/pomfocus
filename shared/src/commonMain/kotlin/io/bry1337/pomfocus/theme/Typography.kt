@@ -5,7 +5,6 @@ package io.bry1337.pomfocus.theme
  * Copyright (c) 2023 bry1337.github.io. All rights reserved.
  */
 
-
 // Base from:
 // https://m3.material.io/styles/typography/type-scale-tokens
 object Typography {

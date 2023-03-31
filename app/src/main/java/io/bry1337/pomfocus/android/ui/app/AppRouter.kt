@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import io.bry1337.pomfocus.android.ui.main.MainScene
 
 /**
  * Created by Bryan on 2/28/23.
@@ -42,6 +43,23 @@ class AppRouter(private val navController: NavHostController) {
             }
         }
     }
+
+    fun navigateToScene(scene: MainScene) {
+        // On navigating to app scenes i.e. splash/bootstrap or main
+        // - Pop up to the start destination of the graph and don't save state since
+        //   no route hierarchy should be maintained
+        // - launchSingleTop to avoid multiple copies of the same destination
+        // - Don't restore any state
+        if (scene.route != currentRoute) {
+            navController.navigate(scene.route) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = false
+                }
+                launchSingleTop = true
+                restoreState = false
+            }
+        }
+    }
 }
 
 /**
@@ -49,4 +67,4 @@ class AppRouter(private val navController: NavHostController) {
  * This is used to de-duplicate navigation events.
  */
 private fun NavBackStackEntry.lifecycleIsResumed() =
-    this.lifecycle.currentState == Lifecycle.State.RESUMED
+    this.getLifecycle().currentState == Lifecycle.State.RESUMED

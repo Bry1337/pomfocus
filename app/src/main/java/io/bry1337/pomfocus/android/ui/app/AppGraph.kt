@@ -5,6 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import io.bry1337.pomfocus.android.ui.main.MainScene
+import io.bry1337.pomfocus.android.ui.main.mainGraph
 import io.bry1337.pomfocus.android.ui.splash.SplashScreen
 
 /**
@@ -25,6 +28,14 @@ fun AppGraph(appState: AppState, modifier: Modifier = Modifier, finishActivity: 
                 finishActivity()
             }
             SplashScreen(modifier)
+        }
+
+        navigation(route = AppScene.MAIN.route, startDestination = MainScene.HOME.route) {
+            mainGraph(
+                appState = appState,
+                modifier = modifier,
+                finishActivity = finishActivity
+            )
         }
     }
 }
