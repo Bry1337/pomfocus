@@ -45,6 +45,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     private var runningSeconds by mutableStateOf(TimerConstants.DEFAULT_SECONDS)
     private var isTimeRunning by mutableStateOf(false)
     private var pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
+    var showSaveOption by mutableStateOf(false)
     var taskList by mutableStateOf(listOf<Task>())
     var formattedRunningTime by mutableStateOf(
         String.format(
@@ -158,7 +159,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                     notifTitle = R.string.notification_pomodoro_finished_title,
                     notifContent = R.string.notification_pomodoro_finished
                 )
-                saveTasksListed()
+                showSaveOption = true
             }
 
             PomodoroState.BREAK_START, PomodoroState.BREAK_RUNNING -> {
@@ -181,13 +182,17 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     /**
      * Save tasks list in local device database
      */
-    private fun saveTasksListed() {
+    fun saveTasksListed() {
         viewModelScope.launch {
             dbOps.saveObjects(taskList)
             taskList = taskList.toMutableList().also {
                 it.clear()
             }
         }
+    }
+
+    fun updateSaveDialog() {
+        showSaveOption = !showSaveOption
     }
 
     /**

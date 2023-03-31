@@ -37,6 +37,7 @@ import io.bry1337.pomfocus.android.extensions.RoundedModalShape
 import io.bry1337.pomfocus.android.extensions.themePaddingV
 import io.bry1337.pomfocus.android.ui.app.AppState
 import io.bry1337.pomfocus.android.ui.app.rememberAppState
+import io.bry1337.pomfocus.android.ui.components.AppDialog
 import io.bry1337.pomfocus.android.ui.components.AppNavBar
 import io.bry1337.pomfocus.android.ui.components.AppNavBarItem
 import io.bry1337.pomfocus.android.ui.components.AppTaskTextField
@@ -106,6 +107,7 @@ fun HomeScreen(
             }
         }
     }
+    val showSaveDialog = viewModel.showSaveOption
     val currentPhase = viewModel.pomodoroCurrentIndex
     val taskList = viewModel.taskList
     DisposableEffect(lifeCycleOwner) {
@@ -170,6 +172,13 @@ fun HomeScreen(
                         )
                     }
                 }
+                AppDialog(
+                    showDialog = showSaveDialog,
+                    onDismiss = viewModel::updateSaveDialog,
+                    action = {
+                        viewModel.saveTasksListed()
+                    }
+                )
             }
         }
     }
