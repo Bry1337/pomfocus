@@ -36,6 +36,7 @@ import io.bry1337.pomfocus.android.extensions.themePaddingAll
 import io.bry1337.pomfocus.android.extensions.themePaddingBottom
 import io.bry1337.pomfocus.android.extensions.themePaddingH
 import io.bry1337.pomfocus.android.extensions.themeShadow
+import io.bry1337.pomfocus.android.extensions.toCamelCase
 import io.bry1337.pomfocus.android.ui.app.AppState
 import io.bry1337.pomfocus.android.ui.app.rememberAppState
 import io.bry1337.pomfocus.android.ui.components.ActionOutlinedButton
@@ -63,6 +64,8 @@ fun SettingsModal(
     val themeList = viewModel.themePresetNameList
     val isDarkMode = viewModel.isDarkMode
     val backgroundColor = MaterialTheme.colorScheme.background
+    val selectedTheme =
+        viewModel.currentSelectedTheme ?: stringResource(id = R.string.settings_theme_button)
     var dropDownMenuExpanded by remember { mutableStateOf(false) }
 
     val onDropDownExpand: () -> Unit = {
@@ -81,6 +84,7 @@ fun SettingsModal(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             ThemeSelection(
+                currentSelectedTheme = selectedTheme,
                 onDropDownExpand,
                 dropDownMenuExpanded,
                 themeList,
@@ -102,6 +106,7 @@ fun SettingsModal(
 
 @Composable
 private fun ThemeSelection(
+    currentSelectedTheme: String,
     onDropDownExpand: () -> Unit,
     dropDownMenuExpanded: Boolean,
     themeList: List<String>,
@@ -119,7 +124,7 @@ private fun ThemeSelection(
                     .clickable {
                         onDropDownExpand()
                     },
-                text = stringResource(id = R.string.settings_theme_button),
+                text = currentSelectedTheme,
                 style = MaterialTheme.typography.titleMedium
             )
             Icon(

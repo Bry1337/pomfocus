@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.bry1337.pomfocus.android.extensions.toCamelCase
 import io.bry1337.pomfocus.android.model.UserPreset
 import io.bry1337.pomfocus.android.services.prefs.PreferencesManager
 import io.bry1337.pomfocus.android.ui.theme.ThemeManager
@@ -33,6 +34,9 @@ class SettingsModalViewModel @Inject constructor(private val preferencesManager:
     var isDarkMode by mutableStateOf(isDarkScheme)
         private set
 
+    var currentSelectedTheme: String? by mutableStateOf(null)
+        private set
+
     init {
         viewModelScope.launch {
             ThemeManager.themeFlow.collect {
@@ -50,6 +54,7 @@ class SettingsModalViewModel @Inject constructor(private val preferencesManager:
                 .collect { themeName ->
                     preferencesManager.setThemePreset(UserPreset(themeName))
                 }
+            currentSelectedTheme = presetName.toCamelCase()
         }
     }
 
