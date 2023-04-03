@@ -193,6 +193,10 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
 
     fun updateSaveDialog() {
         showSaveOption = !showSaveOption
+        // Clear task list upon transitioning to break time
+        taskList = taskList.toMutableList().also {
+            it.clear()
+        }
     }
 
     /**

@@ -73,11 +73,12 @@ class TaskOpsImpl(private val dispatcher: CoroutineDispatcher = Dispatchers.Defa
     }
 
     override suspend fun saveObject(task: Task) {
+        val dbTask = Task.buildDbTask(task.id, task.description, task.dateTime)
         withContext(scope.coroutineContext) {
             db.pomfocusQueries.insertTask(
-                id = task.id,
-                description = task.description,
-                datetime = task.dateTime
+                id = dbTask.id,
+                description = dbTask.description,
+                datetime = dbTask.datetime
             )
         }
     }
