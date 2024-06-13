@@ -1,7 +1,9 @@
 package io.bry1337.pomfocus.android.ui.app
 
 import android.app.Application
+import android.content.Context
 import dagger.hilt.android.HiltAndroidApp
+import io.bry1337.pomfocus.android.utils.AppProvider
 import io.bry1337.pomfocus.theme.AppContext
 
 /**
@@ -15,5 +17,13 @@ class PomfocusApp : Application() {
         AppContext.registerContextProvider {
             this
         }
+
+        AppProvider.registerApplicationProvider {
+            this
+        }
+    }
+
+    override fun getApplicationContext(): Context {
+        return this
     }
 }

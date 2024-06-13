@@ -14,9 +14,12 @@ object TimerConstants {
 
     const val DEFAULT_POMODORO_MINUTES = 1 // Temporary value
 
-    //    const val DEFAULT_POMODORO_MINUTES = 25 // Default minutes per Pomodoro technique
+//    const val DEFAULT_POMODORO_MINUTES = 25 // Default minutes per Pomodoro technique
     const val DEFAULT_BREAK_MINUTES = 5
 
     const val DEFAULT_SECONDS = 0
     const val DEFAULT_FULL_SECONDS = 60
+
+    const val SCHEME = "package"
+    const val NOTIFICATION_PERMISSION_TRIES = 2
 }

@@ -13,7 +13,6 @@ import io.bry1337.pomfocus.theme.DurationConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.takeWhile
@@ -48,7 +47,6 @@ class ContentViewModel @Inject constructor(preferencesManager: PreferencesManage
                             isThemeDone = true
                             val userPreset = Json.decodeFromString<UserPreset>(dataString)
                             ThemeManager.onThemePresetNameChanged(userPreset.themePreset.name)
-                            println("ContentViewModel: datastring: $dataString")
                         }
                     }
             }
@@ -59,13 +57,11 @@ class ContentViewModel @Inject constructor(preferencesManager: PreferencesManage
                 preferencesManager.isDarkScheme.flowOn(Dispatchers.IO).takeWhile { !isSchemeDone }.map { isDarkScheme ->
                     isDarkScheme?.let {
                         ThemeManager.onDarkSchemeChanged(isDarkScheme)
-                        println("ContentViewModel: darkscheme: $isDarkScheme")
                     }
                 }.collect {
                     isSchemeDone = true
                     delay(DurationConstants.splashDurationSeconds * 1000L)
                     activeScene = AppScene.MAIN
-                    println("ContentViewModel: go to main scene")
                 }
             }
         }

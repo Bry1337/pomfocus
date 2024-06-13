@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -36,7 +40,6 @@ import io.bry1337.pomfocus.android.extensions.themePaddingAll
 import io.bry1337.pomfocus.android.extensions.themePaddingBottom
 import io.bry1337.pomfocus.android.extensions.themePaddingH
 import io.bry1337.pomfocus.android.extensions.themeShadow
-import io.bry1337.pomfocus.android.extensions.toCamelCase
 import io.bry1337.pomfocus.android.ui.app.AppState
 import io.bry1337.pomfocus.android.ui.app.rememberAppState
 import io.bry1337.pomfocus.android.ui.components.ActionOutlinedButton
@@ -74,6 +77,7 @@ fun SettingsModal(
     Column(
         modifier = modifier
             .background(color = backgroundColor)
+            .padding(WindowInsets.navigationBars.asPaddingValues())
             .themePaddingBottom()
     ) {
         Row(
