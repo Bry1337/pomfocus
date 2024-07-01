@@ -20,13 +20,20 @@
     <string name="home_screen_focus_label_2">Keep going, just a little more!</string>
     <string name="home_screen_focus_label_3">Get some fresh air break</string>
     <string name="home_screen_focus_label_4">Rehydrate and breathe</string>
-    <string name="home_screen_task_label">Tasks</string>
+    <string name="home_screen_task_label">Task</string>
+
+    <string name="toast_message_fail_1">Too bad, you weren\'t able to finish all the tasks</string>
+    <string name="toast_message_success_1">Nice! You finished all the tasks</string>
 
     <!-- Notification -->
     <string name="notification_pomodoro_finished_title">Break time!</string>
     <string name="notification_pomodoro_finished">Wow you did great! you\'ve earned a 5 minute break.</string>
     <string name="notification_break_finished_title">Back to focus</string>
     <string name="notification_break_finished">Break is finished, let\'s go finish some tasks</string>
+    <string name="request_permission_button_1">Grant Permission</string>
+    <string name="request_permission_notification_1">The notification is important and it keeps you up to date of what is currently
+        going on with your application. \nPlease grant the permission.</string>
+    <string name="request_permission_notification_2">Notification permission is needed for this application, Please grant the permission</string>
 
     <!-- App Dialog -->
     <string name="app_dialog_message_1">Would you like to save your tasks as finished?</string>

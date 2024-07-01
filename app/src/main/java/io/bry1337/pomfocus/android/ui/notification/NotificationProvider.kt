@@ -49,7 +49,7 @@ object NotificationProvider {
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(appContext.getString(contentTitle))
             .setContentText(appContext.getString(contentText))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         if (ActivityCompat.checkSelfPermission(
                 appContext,

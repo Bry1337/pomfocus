@@ -155,14 +155,15 @@ fun AppTaskTextField(
     labelText: String? = null,
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(size = sized.roundedCornersScaling),
+    currentIndex: Int,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
     keyboardOnDone: (String) -> Unit = {},
-    deleteAction: () -> Unit = {}
+    deleteAction: (Int) -> Unit = {}
 ) {
     val deleteIcon: @Composable () -> Unit = {
         AppIconButton(
             icon = R.drawable.ic_delete,
-            action = deleteAction,
+            action = { deleteAction(currentIndex) },
             modifier = Modifier.themePaddingEnd(sized = AppSizing.xs)
         )
     }
@@ -235,7 +236,7 @@ fun AppRowTextFieldPreview() {
 fun AppTaskTextFieldPreview() {
     AppTheme {
         Box(modifier = Modifier.background(color = Color.White)) {
-            AppTaskTextField(placeholderText = "Placeholder")
+            AppTaskTextField(placeholderText = "Placeholder", currentIndex = 0)
         }
     }
 }

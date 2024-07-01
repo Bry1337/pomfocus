@@ -5,7 +5,7 @@
     <application
         android:label="@string/app_name"
         android:name=".ui.app.PomfocusApp"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_2"
         android:allowBackup="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
