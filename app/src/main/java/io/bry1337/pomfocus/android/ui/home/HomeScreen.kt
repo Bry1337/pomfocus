@@ -1,6 +1,7 @@
 package io.bry1337.pomfocus.android.ui.home
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,33 +9,33 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import io.bry1337.pomfocus.android.R
 import io.bry1337.pomfocus.android.extensions.RoundedModalShape
 import io.bry1337.pomfocus.android.extensions.themePaddingV
+import io.bry1337.pomfocus.android.model.PomodoroState
 import io.bry1337.pomfocus.android.ui.app.AppState
 import io.bry1337.pomfocus.android.ui.app.rememberAppState
 import io.bry1337.pomfocus.android.ui.components.AppDialog
@@ -66,7 +67,7 @@ private enum class HomeScreenBottomSheet : BottomSheetDescriptor {
 
 @OptIn(
     ExperimentalMaterialApi::class,
-    ExperimentalPermissionsApi::class
+    ExperimentalComposeUiApi::class
 )
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -78,19 +79,9 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
-    // Move notification permission handling on different composable
-    // Fix issue with version capping
-    val notificationPermissionState =
-        rememberPermissionState(permission = android.Manifest.permission.POST_NOTIFICATIONS)
-    if (!notificationPermissionState.status.isGranted && notificationPermissionState.status.shouldShowRationale) {
-        // TODO Show rationale message in dialog why notification permission is needed
-        // Reference :
-        // https://kubiakdev.medium.com/notification-permission-request-on-android-13-part-2-the-implementation-f512239a9bc
-        // should run inside onclick trigger
-        // notificationPermissionState.launchPermissionRequest()
-    }
+    val keyboardController = LocalSoftwareKeyboardController.current
     val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val currentPomodoroState = viewModel.currentPomodoroState
     val bottomSheetOperation = rememberBottomSheetOperation(
         scope = scope,
         initialBottomSheetDescriptor = HomeScreenBottomSheet.Settings
@@ -109,7 +100,10 @@ fun HomeScreen(
     }
     val showSaveDialog = viewModel.showSaveOption
     val currentPhase = viewModel.pomodoroCurrentIndex
+    val showToastMessage = viewModel.showToastMessage
+    val toastMessage = viewModel.toastMessage
     val taskList = viewModel.taskList
+
     DisposableEffect(lifeCycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_STOP) {
@@ -122,10 +116,19 @@ fun HomeScreen(
             lifeCycleOwner.lifecycle.removeObserver(observer)
         }
     }
-
-    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
-        ModalDrawerSheet {
+    LaunchedEffect(showToastMessage) {
+        if (showToastMessage) {
+            Toast.makeText(
+                context,
+                context.getString(toastMessage),
+                Toast.LENGTH_SHORT
+            ).show()
         }
+    }
+    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
+        // TODO uncomment when drawer is implemented
+//        ModalDrawerSheet {
+//        }
     }) {
         ModalBottomSheetLayout(
             sheetState = bottomSheetOperation.sheetState,
@@ -153,23 +156,30 @@ fun HomeScreen(
                         )
                     }
 
-                    itemsIndexed(items = taskList, key = { _, task ->
-                        task.id
-                    }) { index, task ->
-                        val placeholderVal = if (index == 0) {
-                            stringResource(id = R.string.home_screen_task_label)
-                        } else {
-                            ""
+                    if (currentPomodoroState.state == PomodoroState.POMODORO_START.state ||
+                        currentPomodoroState.state == PomodoroState.POMODORO_RUNNING.state
+                    ) {
+                        itemsIndexed(items = taskList) { index, task ->
+                            AppTaskTextField(
+                                modifier = Modifier.themePaddingV(sized = AppSizing.sm),
+                                placeholderText = stringResource(id = R.string.home_screen_task_label),
+                                currentIndex = index,
+                                keyboardOnDone = {
+                                    keyboardController?.hide()
+                                },
+                                deleteAction = {
+                                    viewModel.deleteTask(it, task)
+                                }
+                            )
                         }
-                        AppTaskTextField(
-                            modifier = Modifier.themePaddingV(sized = AppSizing.sm),
-                            enabled = index == 0,
-                            placeholderText = placeholderVal,
-                            keyboardOnDone = viewModel::addNewTask,
-                            deleteAction = {
-                                viewModel.deleteTask(task)
+                        item {
+                            Button(onClick = viewModel::addNewTasks) {
+                                Icon(
+                                    painterResource(id = R.drawable.ic_plus_add),
+                                    contentDescription = null
+                                )
                             }
-                        )
+                        }
                     }
                 }
                 AppDialog(
@@ -187,14 +197,9 @@ fun HomeScreen(
 @Composable
 private fun TopAppbar(onDrawerPressed: () -> Unit, onSettingsPressed: () -> Unit) {
     AppNavBar(leadingItem = {
-        AppNavBarItem(icon = R.drawable.ic_menu, action = onDrawerPressed)
-    }, title = {
-            Text(
-                text = stringResource(id = R.string.app_name),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        }, trailingItem = {
+        // TODO uncomment when navigation options are available
+//        AppNavBarItem(icon = R.drawable.ic_menu, action = onDrawerPressed)
+    }, trailingItem = {
             AppNavBarItem(icon = R.drawable.ic_settings, action = onSettingsPressed)
         })
 }

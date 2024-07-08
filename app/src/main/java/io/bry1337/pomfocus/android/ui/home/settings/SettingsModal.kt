@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -63,6 +67,8 @@ fun SettingsModal(
     val themeList = viewModel.themePresetNameList
     val isDarkMode = viewModel.isDarkMode
     val backgroundColor = MaterialTheme.colorScheme.background
+    val selectedTheme =
+        viewModel.currentSelectedTheme ?: stringResource(id = R.string.settings_theme_button)
     var dropDownMenuExpanded by remember { mutableStateOf(false) }
 
     val onDropDownExpand: () -> Unit = {
@@ -71,6 +77,7 @@ fun SettingsModal(
     Column(
         modifier = modifier
             .background(color = backgroundColor)
+            .padding(WindowInsets.navigationBars.asPaddingValues())
             .themePaddingBottom()
     ) {
         Row(
@@ -81,6 +88,7 @@ fun SettingsModal(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             ThemeSelection(
+                currentSelectedTheme = selectedTheme,
                 onDropDownExpand,
                 dropDownMenuExpanded,
                 themeList,
@@ -102,6 +110,7 @@ fun SettingsModal(
 
 @Composable
 private fun ThemeSelection(
+    currentSelectedTheme: String,
     onDropDownExpand: () -> Unit,
     dropDownMenuExpanded: Boolean,
     themeList: List<String>,
@@ -119,7 +128,7 @@ private fun ThemeSelection(
                     .clickable {
                         onDropDownExpand()
                     },
-                text = stringResource(id = R.string.settings_theme_button),
+                text = currentSelectedTheme,
                 style = MaterialTheme.typography.titleMedium
             )
             Icon(

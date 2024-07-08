@@ -33,6 +33,10 @@ render.experimental.xml
 # Android Profiling
 *.hprof
 
+# Built application files
+*.apk
+*.aab
+
 # fastlane
 #
 # It is recommended to not store the screenshots in the git repo.

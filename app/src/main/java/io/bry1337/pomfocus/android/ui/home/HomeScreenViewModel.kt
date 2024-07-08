@@ -16,14 +16,13 @@ import io.bry1337.pomfocus.db.DatabaseManager
 import io.bry1337.pomfocus.db.DatabaseModelOps
 import io.bry1337.pomfocus.db.TaskOpsImpl
 import io.bry1337.pomfocus.domain.models.Task
-import io.bry1337.pomfocus.domain.utils.randomUUID
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import javax.inject.Inject
 
 /**
@@ -39,6 +38,8 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     }
     val pomodoroModels = Pomodoro.pomodoroList
     var pomodoroCurrentIndex by mutableStateOf(0)
+    var currentPomodoroState by mutableStateOf(PomodoroState.POMODORO_START)
+        private set
     private var timerScope: Job? = null
     private var pomodoroTotalTime: Int by mutableStateOf(pomodoroModels[pomodoroCurrentIndex].pomodoroTotalSeconds) // 1500 for 25 minutes
     private var runningMinutes by mutableStateOf(pomodoroModels[pomodoroCurrentIndex].pomodoroTotalMinutes) // 25 minutes default value
@@ -46,7 +47,11 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
     private var isTimeRunning by mutableStateOf(false)
     private var pomodoroTimeFlow = (pomodoroTotalTime downTo 0).asFlow()
     var showSaveOption by mutableStateOf(false)
-    var taskList by mutableStateOf(listOf<Task>())
+    var taskList: List<Task> by mutableStateOf(listOf<Task>())
+    var showToastMessage by mutableStateOf(false)
+        private set
+    var toastMessage by mutableStateOf(0)
+        private set
     var formattedRunningTime by mutableStateOf(
         String.format(
             "%02d:%02d",
@@ -65,6 +70,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
      */
     private fun buildEmptyTask() {
         taskList = taskList.toMutableList().also {
+            it.clear()
             it.add(Task.buildEmpty())
         }
     }
@@ -159,7 +165,17 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                     notifTitle = R.string.notification_pomodoro_finished_title,
                     notifContent = R.string.notification_pomodoro_finished
                 )
-                showSaveOption = true
+                val message = if (taskList.size > 1) {
+                    R.string.toast_message_fail_1
+                } else {
+                    R.string.toast_message_success_1
+                }
+                showToastMessage(message)
+                taskList = taskList.toMutableList().also {
+                    it.clear()
+                }
+                // TODO Uncomment when saving of tasks is available
+//                showSaveOption = true
             }
 
             PomodoroState.BREAK_START, PomodoroState.BREAK_RUNNING -> {
@@ -176,6 +192,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
                 buildEmptyTask()
             }
         }
+        currentPomodoroState = pomodoroModels[pomodoroCurrentIndex].state
         isTimeRunning = !isTimeRunning
     }
 
@@ -193,6 +210,10 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
 
     fun updateSaveDialog() {
         showSaveOption = !showSaveOption
+        // Clear task list upon transitioning to break time
+        taskList = taskList.toMutableList().also {
+            it.clear()
+        }
     }
 
     /**
@@ -200,30 +221,33 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
      */
     private fun showNotification(@StringRes notifTitle: Int, @StringRes notifContent: Int) {
         viewModelScope.launch {
-            flowOf(notifTitle, notifContent).collect {
-                NotificationProvider.showNotification(notifTitle, notifContent)
-            }
+            NotificationProvider.showNotification(notifTitle, notifContent)
         }
     }
 
-    /**
-     * Add New Task onDone from phone keyboard
-     */
-    fun addNewTask(taskDescription: String) {
+    fun addNewTasks() {
         taskList = taskList.toMutableList().also {
-            if (taskDescription.isNotBlank()) {
-                it.add(index = 0, Task.build(randomUUID(), taskDescription, Clock.System.now()))
-            }
+            it.add(Task.buildEmpty())
         }
     }
 
     /**
      * Delete tasks added in during pomodoro
      */
-    fun deleteTask(task: Task) {
+    fun deleteTask(index: Int, task: Task) {
         taskList = taskList.toMutableList().also {
-            if (task.id != Task.buildEmpty().id) {
-                it.remove(task)
+            it.removeAt(index)
+        }
+    }
+
+    fun showToastMessage(message: Int) {
+        toastMessage = message
+        viewModelScope.launch {
+            flowOf(showToastMessage).map {
+                showToastMessage = !it
+            }.collect {
+                delay(2000L)
+                showToastMessage = !showToastMessage
             }
         }
     }
